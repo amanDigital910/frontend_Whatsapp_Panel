@@ -66,66 +66,16 @@ const UserDashboard = () => {
       cardCredit: 0,
       bg: "#6576ff",
       redirectUrl: "/personal/poll/campaign"
-    },
-    {
-      id: 9,
-      cardName: "Int. Virtual Quick Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/campaign"
-    },
-    {
-      id: 10,
-      cardName: "Int. Virtual CSV Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/csvcampaign"
-    },
-    {
-      id: 11,
-      cardName: "Int. Virtual Button Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/buttoncampaign"
-    },
-
-    {
-      id: 13,
-      cardName: "Int. Personal Quick Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/personal/campaign"
-    },
-    {
-      id: 14,
-      cardName: "Int. Personal CSV Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/personal/csvcampaign"
-    },
-    {
-      id: 15,
-      cardName: "Int. Personal Button Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/personal/buttoncampaign"
-    },
-    {
-      id: 16,
-      cardName: "Int. Personal Poll Campaign",
-      cardCredit: 0,
-      bg: "#6576ff",
-      redirectUrl: "/international/personal/pollcampaign"
     }
   ];
 
   return (
     <>
-      <section className="container py-5 mt-5 w-full" style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+      <section className="container py-5 w-full" style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
         <div className="row g-4 ">
           {MsgCategory.map((item, index) => (
             <div className="group col-12 col-md-6 col-lg-4 cursor-pointer" key={index}>
-            <div className="bg-slate-50 hover:bg-white shadow-md hover:shadow-xl border border-dark rounded-lg p-4 flex flex-col justify-between h-32 overflow-hidden relative transition-all duration-500 ease-in-out transform hover:scale-105 hover:translate-y-[-5px]">
+            <div className="bg-white hover:bg-white shadow-md hover:shadow-xl border border-dark rounded-lg p-4 flex flex-col justify-between h-32 overflow-hidden relative transition-all duration-500 ease-in-out transform hover:scale-105 hover:translate-y-[-5px]">
               
               {/* Background animation */}
               <div className="absolute top-0 left-0 w-full h-full bg-white transform translate-y-[-100%] transition-transform duration-500 ease-in-out group-hover:translate-y-0"></div>
