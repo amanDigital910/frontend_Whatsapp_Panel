@@ -1,6 +1,4 @@
 import React from 'react';
-import { BsCreditCard2BackFill } from "react-icons/bs";
-import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,151 +10,146 @@ const UserDashboard = () => {
   const handleCardClick = (url) => {
     navigate(url);
   };
-  const SampleJson = [
+  const MsgCategory = [
     {
       id: 1,
-      cardName: "Wa Virtual Quick Campaign",
+      cardName: "Virtual Quick Campaign",
       cardCredit: 0,
       bg: "#216ca1",
-      redirectUrl: "/user/virtualcampaign", 
+      redirectUrl: "/user/virtualcampaign",
     },
     {
       id: 2,
-      cardName: "Wa Virtual DP Campaign",
+      cardName: "Virtual DP Campaign",
       cardCredit: 0,
       bg: "#216ca1",
-      redirectUrl:"/user/dpcampaign"
+      redirectUrl: "/user/dpcampaign"
     },
     {
       id: 3,
-      cardName: " Wa Virtual Button Campaign",
+      cardName: "Virtual Button Campaign",
       cardCredit: 0,
       bg: "#216ca1",
-       redirectUrl:"/user/buttoncampaign"
+      redirectUrl: "/user/buttoncampaign"
     },
     {
       id: 4,
-      cardName: " Wa Virtual CSV Campaign",
+      cardName: "Virtual CSV Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
-       redirectUrl:"/user/csvvirtual"
+      redirectUrl: "/user/csvvirtual"
     },
     {
       id: 5,
-      cardName: "Wa Personal Quick Campaign",
+      cardName: "Personal Quick Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
-      redirectUrl:"/personal/campaign"
+      redirectUrl: "/personal/campaign"
     },
     {
       id: 6,
-      cardName: "Wa Personal Button Campaign",
+      cardName: "Personal Button Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
-       redirectUrl:"/personal/button"
+      redirectUrl: "/personal/button"
     },
     {
       id: 7,
-      cardName: "Wa Personal CSV Campaign",
+      cardName: "Personal CSV Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/personal/PersonalCsv"
+      redirectUrl: "/personal/PersonalCsv"
     },
     {
       id: 8,
-      cardName: "Wa Personal Poll Campaign",
+      cardName: "Personal Poll Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/personal/poll/campaign"
+      redirectUrl: "/personal/poll/campaign"
     },
     {
       id: 9,
-      cardName: "Wa Int. Virtual Quick Campaign",
+      cardName: "Int. Virtual Quick Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/campaign"
+      redirectUrl: "/international/campaign"
     },
     {
       id: 10,
-      cardName: "Wa Int. Virtual CSV Campaign",
+      cardName: "Int. Virtual CSV Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/csvcampaign"
+      redirectUrl: "/international/csvcampaign"
     },
     {
       id: 11,
-      cardName: "Wa Int. Virtual Button Campaign",
+      cardName: "Int. Virtual Button Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/buttoncampaign"
+      redirectUrl: "/international/buttoncampaign"
     },
-  
+
     {
       id: 13,
-      cardName: "Wa Int. Personal Quick Campaign",
+      cardName: "Int. Personal Quick Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/personal/campaign"
+      redirectUrl: "/international/personal/campaign"
     },
     {
       id: 14,
-      cardName: "Wa Int. Personal CSV Campaign",
+      cardName: "Int. Personal CSV Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/personal/csvcampaign"
+      redirectUrl: "/international/personal/csvcampaign"
     },
     {
       id: 15,
-      cardName: "Wa Int. Personal Button Campaign",
+      cardName: "Int. Personal Button Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/personal/buttoncampaign"
+      redirectUrl: "/international/personal/buttoncampaign"
     },
     {
       id: 16,
-      cardName: "Wa Int. Personal Poll Campaign",
+      cardName: "Int. Personal Poll Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl:"/international/personal/pollcampaign"
+      redirectUrl: "/international/personal/pollcampaign"
     }
-    
   ];
 
   return (
     <>
-      <section className="container py-5 mt-5" style={{ backgroundColor: "#ffffff", minHeight: "00vh", width: "200vw" }}>
-        <div className="row g-4">
-          {SampleJson.map((item, index) => (
-            <div className="col-12 col-md-6 col-lg-3" key={index}>
-              <div className="card shadow-sm border border-dark"> {/* Added border here */}
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                    <h5
-                        className="card-title fw-bold text-primary"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleCardClick(item.redirectUrl)}
-                      >
-                        {item.cardName}
-                      </h5>
-                      {/* {item.cardCredit === 1 ? (
-                        <h6 className="text-primary mt-3 fw-semibold">{item.texthere}</h6>
-                       ) 
-                      : (
-                        <h6 className="text-primary mt-3 fw-semibold">
-                          Balance - {item.cardCredit}
-                        </h6>
-                      )
-                      } */}
-                    </div>
-                    <BsCreditCard2BackFill
-                      style={{ color: item.bg, fontSize: '2rem' }}
-                    />
-                  </div>
+      <section className="container py-5 mt-5 w-full" style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+        <div className="row g-4 ">
+          {MsgCategory.map((item, index) => (
+            <div className="group col-12 col-md-6 col-lg-4 cursor-pointer" key={index}>
+            <div className="bg-slate-50 hover:bg-white shadow-md hover:shadow-xl border border-dark rounded-lg p-4 flex flex-col justify-between h-32 overflow-hidden relative transition-all duration-500 ease-in-out transform hover:scale-105 hover:translate-y-[-5px]">
+              
+              {/* Background animation */}
+              <div className="absolute top-0 left-0 w-full h-full bg-white transform translate-y-[-100%] transition-transform duration-500 ease-in-out group-hover:translate-y-0"></div>
+              
+              {/* Card Content */}
+              <div className="flex justify-between items-center h-full w-full gap-4 relative z-10">
+                <div onClick={() => handleCardClick(item.redirectUrl)}>
+                  <h2 className="text-primary font-bold leading-snug text-[16px] transition-colors duration-300 hover:text-blue-500 group-hover:underline underline-offset-4">
+                    {item.cardName}
+                  </h2>
+                  <h3 className="text-primary font-semibold text-lg transition-colors duration-300 hover:text-blue-500">
+                    Balance - {item.cardCredit}
+                  </h3>
                 </div>
-               
+          
+                {/* Icon */}
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transform transition-transform duration-300 hover:scale-125 text-[1rem]"
+                  style={{ backgroundColor: item.bg }} >
+                  {item.cardName?.charAt(0) || 'W'}
+                </div>
               </div>
             </div>
+          </div>
+          
           ))}
         </div>
       </section>
@@ -166,3 +159,25 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
+const SvgCard = ({ cardColor }) => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 16 16"
+      className="transform transition-transform duration-300 hover:scale-125 text-[3rem]"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        color: cardColor,      // Dynamically setting the color
+        fontSize: "3rem",      // Fixed font size
+
+      }}
+    >
+      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H0zm11.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1z"></path>
+    </svg>
+  );
+};
