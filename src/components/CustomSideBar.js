@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import creditCardIcon from '../assets/icons/credit-card.png';
 import dashboardIcon from '../assets/icons/dashboard.png';
 import home from '../assets/icons/home.png';
@@ -22,6 +22,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
         localStorage.clear();
         navigate("/login")
     }
+    const location = useLocation();
 
     const isMobile = useIsMobile();
 
@@ -133,61 +134,69 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                         z-10 bg-cover ${isOpen ? 'p-4' : 'p-2'}`} />
                         </div>
 
-                {/* Menu Items */}
-                <ul className="space-y-1 py-0 px-0">
-                    {sidebarMenu.map((item, index) => (
-                        <li key={index} className="text-white">
-                            {item.dropdown ? (
-                                <div className="group">
-                                    <button
-                                        onClick={() => toggleDropdown(index)}
-                                        className={`w-full flex items-center p-3 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
-                                    >
-                                        <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
-                                            <img src={item.icon} width={20} height={20} alt="" />
-                                            {isOpen && <span className="text-base">{item.label}</span>}
-                                        </div>
-                                        {isOpen && (
-                                            <svg
-                                                className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === index ? "rotate-180" : ""}`}
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        )}
-                                    </button>
+                        {/* Menu Items */}
+                        <ul className="space-y-1 py-0 px-0">
+                            {sidebarMenu.map((item, index) => {
+                                const isActiveParent = item.to && location.pathname === item.to;
+                                const isDropdownActive = item.dropdown?.some(sub => location.pathname === sub.to);
 
-                                            {activeDropdown === index && isOpen && (
-                                                <ul className="mt-1 space-y-1  duration-300 ease-in-out">
-                                                    {item.dropdown.map((subItem, subIndex) => (
-                                                        <li key={subIndex}>
-                                                            <Link
-                                                                to={subItem.to}
-                                                                className="block px-2 py-2 text-sm text-white rounded hover:bg-green-700 no-underline hover:underline underline-offset-2"
-                                                            >
-                                                                {subItem.label}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <Link
-                                            to={item.to}
-                                            // className={`w-full flex items-center rounded px-2 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
-                                            className={`flex items-center text-white hover:bg-green-700 no-underline hover:underline underline-offset-2 px-2 py-2 ${isOpen ? "justify-start space-x-2" : "justify-center"}`}
-                                        >
-                                            <div className={`flex items-center ${isOpen ? "space-x-2" : ""} p-2 justify-center`}>
-                                                <img src={item.icon} width={20} height={20} alt="" />
-                                                {isOpen && <span className="text-base">{item.label}</span>}
+                                return (
+                                    <li key={index} className="text-white">
+                                        {item.dropdown ? (
+                                            <div className="group">
+                                                <button
+                                                    onClick={() => toggleDropdown(index)}
+                                                    className={`w-full flex items-center p-3 hover:underline underline-offset-4 transition ${isOpen ? "justify-between" : "justify-center"}  ${isDropdownActive && 'bg-green-700 font-semibold'}`}
+                                                >
+                                                    <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
+                                                        <img src={item.icon} width={20} height={20} alt="" />
+                                                        {isOpen && <span className="text-base ">{item.label}</span>}
+                                                    </div>
+                                                    {isOpen && (
+                                                        <svg
+                                                            className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === index ? "rotate-180" : ""}`}
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                        </svg>
+                                                    )}
+                                                </button>
+
+                                                {activeDropdown === index && isOpen && (
+                                                    <ul className="mt-1 space-y-1  duration-300 ease-in-out p-0">
+                                                        {item.dropdown.map((subItem, subIndex) => {
+                                                            const isActiveSub = location.pathname === subItem.to;
+
+                                                            return (
+                                                                <li key={subIndex} className='p-0' >
+                                                                    <Link
+                                                                        to={subItem.to}
+                                                                        className={`block pl-[42px] pr-2 py-2 text-sm text-white no-underline hover:underline underline-offset-4 ${isActiveSub ? 'bg-green-700 font-semibold' : ''}`}
+                                                                    >
+                                                                        {subItem.label}
+                                                                    </Link>
+                                                                </li>
+                                                            )})}
+                                                    </ul>
+                                                )}
                                             </div>
-                                        </Link>
-                                    )}
-                                </li>
-                            ))}
+                                        ) : (
+                                            <Link
+                                                to={item.to}
+                                                // className={`w-full flex items-center rounded px-2 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
+                                                className={`flex items-center text-white  no-underline hover:underline underline-offset-4 px-2 py-2 ${isOpen ? "justify-start space-x-2" : "justify-center"} ${isActiveParent && 'bg-green-700 font-semibold'}`}
+                                            >
+                                                <div className={`flex items-center ${isOpen ? "space-x-2" : ""} p-2 justify-center`}>
+                                                    <img src={item.icon} width={20} height={20} alt="" />
+                                                    {isOpen && <span className="text-base">{item.label}</span>}
+                                                </div>
+                                            </Link>
+                                        )}
+                                    </li>
+                                )
+                            })}
                         </ul>
 
                         {/* Logout */}
