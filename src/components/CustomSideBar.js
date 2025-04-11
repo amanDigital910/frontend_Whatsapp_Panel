@@ -139,7 +139,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                 <div className="group">
                                     <button
                                         onClick={() => toggleDropdown(index)}
-                                        className={`w-full flex items-center rounded p-3 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
+                                        className={`w-full flex items-center p-3 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
                                     >
                                         <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
                                             <img src={item.icon} width={20} height={20} alt="" />
