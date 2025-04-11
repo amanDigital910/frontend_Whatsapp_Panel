@@ -134,31 +134,31 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                         z-10 bg-cover ${isOpen ? 'p-4' : 'p-2'}`} />
                         </div>
 
-                        {/* Menu Items */}
-                        <ul className="space-y-1 py-0 px-0">
-                            {sidebarMenu.map((item, index) => (
-                                <li key={index} className="text-white">
-                                    {item.dropdown ? (
-                                        <div className="group">
-                                            <button
-                                                onClick={() => toggleDropdown(index)}
-                                                className={`w-full flex items-center rounded p-3 hover:bg-green-700 ${isOpen ? "justify-between" : "justify-center"}`}
+                {/* Menu Items */}
+                <ul className="space-y-1 py-0 px-0">
+                    {sidebarMenu.map((item, index) => (
+                        <li key={index} className="text-white">
+                            {item.dropdown ? (
+                                <div className="group">
+                                    <button
+                                        onClick={() => toggleDropdown(index)}
+                                        className={`w-full flex items-center rounded p-3 hover:bg-green-700 transition ${isOpen ? "justify-between" : "justify-center"}`}
+                                    >
+                                        <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
+                                            <img src={item.icon} width={20} height={20} alt="" />
+                                            {isOpen && <span className="text-base">{item.label}</span>}
+                                        </div>
+                                        {isOpen && (
+                                            <svg
+                                                className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === index ? "rotate-180" : ""}`}
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
                                             >
-                                                <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
-                                                    <img src={item.icon} width={20} height={20} alt="" />
-                                                    {isOpen && <span className="text-base">{item.label}</span>}
-                                                </div>
-                                                {isOpen && (
-                                                    <svg
-                                                        className={`w-4 h-4 ${activeDropdown === index ? "rotate-180" : ""}`}
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                                    </svg>
-                                                )}
-                                            </button>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        )}
+                                    </button>
 
                                             {activeDropdown === index && isOpen && (
                                                 <ul className="mt-1 space-y-1  duration-300 ease-in-out">
