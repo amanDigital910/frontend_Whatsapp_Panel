@@ -71,7 +71,7 @@ const UserDashboard = () => {
 
   return (
     <>
-      <section className="container py-5 w-full" style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+      <section className="container py-5 w-full" style={{ backgroundColor: "#fff", minHeight: "100%" }}>
         <div className="row g-4 ">
           {MsgCategory.map((item, index) => (
             <div className="group col-12 col-md-6 col-lg-4 cursor-pointer" key={index}>
@@ -110,6 +110,7 @@ const UserDashboard = () => {
 
 export default UserDashboard;
 
+// Created an SVG to display the show card on the right side.
 const SvgCard = ({ cardColor }) => {
   return (
     <svg

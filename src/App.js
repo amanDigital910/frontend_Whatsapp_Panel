@@ -5,8 +5,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import CustomSideBar from './components/CustomSideBar';
 import NavBar from './components/NavBar';
-// import SideBar from './components/CustomSideBar';
-import SideBar from './components/SideBar';
+import './App.css'
+// import SideBar from './components/SideBar';
 
 // Pages
 const Dashboard = lazy(() => import('./pages/user/UserDashboard'));
@@ -74,14 +74,14 @@ const App = () => {
   return (
     <div>
       <div className="flex h-full w-full flex-wrap">
+
         {/* Sidebar */}
-        {/* {isOpen && (
-          <div
-            className="fixed inset-0 bg-opacity-0 z-40 hidden md:flex"
-            onClick={() => setIsOpen(false)}
-          />
-        )} */}
-        {/* <SideBar /> */}
+        {/* 
+        // Old Sidebar Code
+        <div className="bg-gray-800 h-full">
+          <SideBar isOpen={isOpen} setIsSidebarOpen={setIsOpen} />
+        </div> 
+        */}
         <CustomSideBar
           isOpen={isOpen}
           setIsOpen={setIsOpen}
@@ -91,8 +91,8 @@ const App = () => {
 
         {/* Main Area */}
         <div className="flex-1 flex flex-col">
-          {/* Topbar */}
 
+          {/* Topbar */}
           <NavBar
             isOpen={isOpen}
             setIsOpen={setIsOpen} />
