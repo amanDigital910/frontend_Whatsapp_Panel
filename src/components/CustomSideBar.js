@@ -112,13 +112,12 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
         <>
             {(!isMobile || isOpen) && (
                 <div className={` ${isOpen ? "w-64" : "ml-20 w-0"} md:ml-0 text-white flex flex-nowrap md:absolute `}>
-                    {/* {!isMobile && ( */}
                     <div
                         style={{ height: "100%", paddingBottom: '151px', }}
-                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#120d50] text-white ${isOpen ? "w-64" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
+                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#120d50] text-white ${isOpen ? "w-[260px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
                     >
                         {/* Sidebar Header */}
-                        <div className={`relative w-full overflow-hidden ${isOpen ? "h-60" : "h-[82px]"}`}>
+                        <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-60" : "h-[82px]"}`}>
                             {/* Background Image */}
                             <img
                                 alt="Profile Background"
