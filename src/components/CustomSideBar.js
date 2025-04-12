@@ -47,9 +47,10 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             icon: whatsappIcon,
             dropdown: [
                 { label: "Quick Campaign", to: "/user/virtualcampaign" },
-                { label: "DP Campaign", to: "/user/dpcampaign" },
-                { label: "Button Campaign", to: "/user/buttoncampaign" },
                 { label: "CSV Campaign", to: "/user/csvvirtual" },
+                { label: "Button Campaign", to: "/user/buttoncampaign" },
+                { label: "DP Campaign", to: "/user/dpcampaign" },
+                { label: "Poll Campaign", to: "/user/pollcampaign" }, //new One
                 { label: "WhatsApp Report", to: "/user/whatsappreport" }
             ]
         },
@@ -58,8 +59,10 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             icon: whatsappIcon,
             dropdown: [
                 { label: "Quick Campaign", to: "/personal/campaign" },
+                { label: "Personal Csv Campaign", to: "/personal/personal-csv" },
                 { label: "Button Campaign", to: "/personal/button" },
-                { label: "Personal Csv Campaign", to: "/personal/PersonalCsv" },
+                { label: "Group/Comm. Campaign", to: "/personal/group" }, //new One
+                { label: "Channel Create & \nSend Bulk Mess. Campaign", to: "/personal/group-community" }, //new One
                 { label: "Poll Campaign", to: "/personal/poll/campaign" },
                 { label: "WhatsApp Report", to: "/personal/report" },
                 { label: "WhatsApp Scan", to: "/personal/scan" }
@@ -118,7 +121,11 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                         className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#120d50] text-white ${isOpen ? "w-[260px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
                     >
                         {/* Sidebar Header */}
+<<<<<<< HEAD
                         <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-60" : "h-[82px]"}`}>
+=======
+                        <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-64" : "h-[70px]"}`}>
+>>>>>>> sidebar_navbar_menu
                             {/* Background Image */}
                             <img
                                 alt="Profile Background"
@@ -178,7 +185,12 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                                                         {subItem.label}
                                                                     </Link>
                                                                 </li>
+<<<<<<< HEAD
                                                             )})}
+=======
+                                                            )
+                                                        })}
+>>>>>>> sidebar_navbar_menu
                                                     </ul>
                                                 )}
                                             </div>

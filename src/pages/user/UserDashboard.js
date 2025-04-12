@@ -58,7 +58,7 @@ const UserDashboard = () => {
       cardName: "Personal CSV Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl: "/personal/PersonalCsv"
+      redirectUrl: "/personal/personal-csv"
     },
     {
       id: 8,

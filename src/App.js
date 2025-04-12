@@ -119,7 +119,7 @@ const App = () => {
                   {/* wa personal Campaige */}
                   <Route path="/personal/campaign" element={<PerosnalCampaign2 />} />
                   <Route path="/personal/poll/campaign" element={<PersonalPoll />} />
-                  <Route path="/personal/PersonalCsv" element={<PersonalCsv />} />
+                  <Route path="/personal/personal-csv" element={<PersonalCsv />} />
                   <Route path="/personal/button" element={<PersonalButton />} />
                   {/* <Route path='/personal/Personalbutton' element={<PersonalCSVButton/> } /> */}
                   <Route path="/personal/report" element={<PersonalCampaign />} />
