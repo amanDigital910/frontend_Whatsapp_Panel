@@ -181,8 +181,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                                                         {subItem.label}
                                                                     </Link>
                                                                 </li>
-                                                            )
-                                                        })}
+                                                            )})}
                                                     </ul>
                                                 )}
                                             </div>
