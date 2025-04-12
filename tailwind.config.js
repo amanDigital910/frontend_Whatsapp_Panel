@@ -42,6 +42,7 @@ module.exports = {
       },
       fontFamily: {
         inter: ['Inter'],
+        roboto: ['Roboto', 'sans-serif'],
         lato: ['Lato']
       }
     },
