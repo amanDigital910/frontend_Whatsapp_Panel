@@ -121,7 +121,6 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                         className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#120d50] text-white ${isOpen ? "w-[260px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
                     >
                         {/* Sidebar Header */}
-                        <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-60" : "h-[82px]"}`}>
                         <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-64" : "h-[70px]"}`}>
                             {/* Background Image */}
                             <img
