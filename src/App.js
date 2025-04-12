@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -48,12 +48,17 @@ const TemplateCampaign = lazy(() => import("./pages/user/TemplateCampaign"));
 
 const ManageUser = lazy(() => import("./pages/user/ManageUser"));
 const ManageCredit = lazy(() => import("./pages/user/ManageCredit"));
+
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
-
+  
   const toggleDropdown = (index) =>
     setActiveDropdown(activeDropdown === index ? null : index);
+  
+  // Disable Side bar in Login Screen
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
 
   // Determine if the current page should show sidebar and navbar
   // const isLoginPage = location.pathname === '/login';
@@ -82,23 +87,23 @@ const App = () => {
           <SideBar isOpen={isOpen} setIsSidebarOpen={setIsOpen} />
         </div> 
         */}
-        <CustomSideBar
+        {!isLoginPage && <CustomSideBar
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           activeDropdown={activeDropdown}
           toggleDropdown={toggleDropdown}
-        />
+        /> }
 
         {/* Main Area */}
         <div className="flex-1 flex flex-col">
 
           {/* Topbar */}
-          <NavBar
+          {!isLoginPage && <NavBar
             isOpen={isOpen}
-            setIsOpen={setIsOpen} />
+            setIsOpen={setIsOpen} /> }
 
           {/* Main Content */}
-          <div className="flex-1 flex flex-col h-full container mt-20 ">
+          <div className={`flex-1 flex flex-col h-full ${!isLoginPage ? 'container mt-20' : ''} `}>
             {/* Scrollable content area */}
             <div className="h-[100%] overflow-y-auto">
               <Suspense fallback={<div>Loading......</div>}>
