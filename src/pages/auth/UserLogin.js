@@ -66,11 +66,11 @@ const UserLogin = () => {
       />
 
       {/* Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full  z-10" />
+      {/* <div className="absolute top-0 left-0 w-full h-full z-10" /> */}
 
       {/* Login Box */}
-      <div className="relative z-20 w-full max-w-lg bg-transparent rounded-lg shadow-[10px_20px_60px_rgba(0,0,0,0.9)] m-4 p-8 ">
-        <h2 className="text-4xl font-bold text-center mb-6 text-white">Login</h2>
+      <div className="relative z-20 w-full max-w-lg bg-[#e0dada] bg-opacity-40 backdrop-blur-sm rounded-lg  shadow-[10px_20px_60px_rgba(0,0,0,0.9)] m-4 p-8 ">
+        {/* <h2 className="text-4xl font-bold text-center mb-6 text-black">Login</h2> */}
         <form onSubmit={handleLogin}>
           {error && (
             <p className="text-[#ff2a2a] text-2xl mb-4 font-bold">{error}</p>
@@ -79,7 +79,7 @@ const UserLogin = () => {
           {/* Username */}
           <div className="mb-6">
             <label
-              className="block text-white md:text-lg text-xl mb-2 font-bold"
+              className="block text-black md:text-lg text-xl mb-2 font-bold"
               htmlFor="username"
             >
               User Name
@@ -101,7 +101,7 @@ const UserLogin = () => {
 
           {/* Password */}
           <div className="mb-6 relative">
-            <label className="block text-white md:text-lg text-xl mb-2 font-bold"
+            <label className="block text-black md:text-lg text-xl mb-2 font-bold"
               htmlFor="password"
             >
               Password
@@ -130,7 +130,7 @@ const UserLogin = () => {
           {/* Submit */}
           <div className="w-full">
             <button
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#120d50] w-full md:text-lg text-xl"
+              className="bg-green-600 hover:bg-green-700 text-black font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#120d50] w-full md:text-lg text-xl"
               type="submit"
               disabled={loading}
             >
