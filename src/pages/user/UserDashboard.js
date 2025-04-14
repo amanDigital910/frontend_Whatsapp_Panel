@@ -13,59 +13,108 @@ const UserDashboard = () => {
   const MsgCategory = [
     {
       id: 1,
-      cardName: "Virtual Quick Campaign",
+      cardName: "WA Virtual Quick / CSV Campaign",
       cardCredit: 0,
       bg: "#216ca1",
       redirectUrl: "/user/virtualcampaign",
     },
     {
       id: 2,
-      cardName: "Virtual DP Campaign",
+      cardName: "WA Virtual DP Campaign",
       cardCredit: 0,
       bg: "#216ca1",
       redirectUrl: "/user/dpcampaign"
     },
     {
       id: 3,
-      cardName: "Virtual Button Campaign",
+      cardName: "WA Virtual Button Campaign",
       cardCredit: 0,
       bg: "#216ca1",
       redirectUrl: "/user/buttoncampaign"
     },
     {
       id: 4,
-      cardName: "Virtual CSV Campaign",
+      cardName: "WA Virtual Poll Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
-      redirectUrl: "/user/csvvirtual"
+      redirectUrl: "/user/pollcampaign"
     },
     {
       id: 5,
-      cardName: "Personal Quick Campaign",
+      cardName: "WA Personal Quick / CSV Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
       redirectUrl: "/personal/campaign"
     },
     {
       id: 6,
-      cardName: "Personal Button Campaign",
+      cardName: "WA Personal Button Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
       redirectUrl: "/personal/button"
     },
     {
       id: 7,
-      cardName: "Personal CSV Campaign",
+      cardName: "WA Personal Group / Community Campaign",
       cardCredit: 0,
       bg: "#6576ff",
-      redirectUrl: "/personal/personal-csv"
+      redirectUrl: "/personal/personal-community"
     },
     {
       id: 8,
-      cardName: "Personal Poll Campaign",
+      cardName: "WA Channel Create & Send Bulk Message Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/send-bulk-message"
+    },
+    {
+      id: 9,
+      cardName: "WA Personal Poll Campaign",
       cardCredit: 0,
       bg: "#6576ff",
       redirectUrl: "/personal/poll/campaign"
+    },
+    {
+      id: 10,
+      cardName: "WA International Virtual Quick / CSV Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/personal-community"
+    },
+    {
+      id: 11,
+      cardName: "WA International Virtual Button Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/send-bulk-message"
+    },
+    {
+      id: 12,
+      cardName: "WA International Personal Quick / CSV Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/poll/campaign"
+    },
+    {
+      id: 13,
+      cardName: "WA International Personal Button Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/poll/campaign"
+    },
+    {
+      id: 13,
+      cardName: "WA International Personal Poll Campaign",
+      cardCredit: 0,
+      bg: "#6576ff",
+      redirectUrl: "/personal/poll/campaign"
+    },
+    {
+      id: 14,
+      cardName: "Membership Valid Till",
+      cardCredit: 0,
+      bg: "#f03c15",
+      redirectUrl: "/personal/poll/membership-validity"
     }
   ];
 
@@ -75,14 +124,14 @@ const UserDashboard = () => {
         <div className="row g-4 ">
           {MsgCategory.map((item, index) => (
             <div className="group col-12 col-md-6 col-lg-4 cursor-pointer" key={index}>
-            <div className="bg-white hover:bg-white shadow-md hover:shadow-xl border border-dark rounded-lg p-4 flex flex-col justify-between h-32 overflow-hidden relative transition-all duration-500 ease-in-out transform hover:scale-105 hover:translate-y-[-5px]">
+            <div className="bg-white hover:bg-white shadow-md hover:shadow-xl  border-gray-400 border rounded-lg px-4 flex flex-col justify-between h-32 overflow-hidden relative transition-all duration-500 ease-in-out transform hover:scale-105 hover:translate-y-[-5px]">
               
               {/* Background animation */}
               <div className="absolute top-0 left-0 w-full h-full bg-white transform translate-y-[-100%] transition-transform duration-500 ease-in-out group-hover:translate-y-0"></div>
               
               {/* Card Content */}
               <div className="flex justify-between items-center h-full w-full gap-4 relative z-10">
-                <div onClick={() => handleCardClick(item.redirectUrl)}>
+                <div className='w-[86%]' onClick={() => handleCardClick(item.redirectUrl)}>
                   <h2 className="text-primary font-bold leading-snug text-[16px] transition-colors duration-300 hover:text-blue-500 group-hover:underline underline-offset-4">
                     {item.cardName}
                   </h2>
@@ -92,7 +141,7 @@ const UserDashboard = () => {
                 </div>
           
                 {/* Icon */}
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transform transition-transform duration-300 hover:scale-125 text-[1rem]"
+                <div className="w-[14%] h-10 rounded-full flex items-center justify-center text-white font-bold transform transition-transform duration-300 hover:scale-125 text-[1.25rem]"
                   style={{ backgroundColor: item.bg }} >
                   {item.cardName?.charAt(0) || 'W'}
                 </div>

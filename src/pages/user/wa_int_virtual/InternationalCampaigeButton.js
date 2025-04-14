@@ -221,9 +221,9 @@ const InternaitionaButtonCampaign = () => {
           </h1>
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-6 lg:flex-col">
           {/* Left Column */}
-          <div className="w-2/5 flex flex-col gap-6">
+          <div className="lg:w-full w-2/5 flex flex-col  gap-6">
             {/* Campaign Title */}
             <div className="flex items-center">
               <p className="w-1/3 py-2 bg-brand_colors text-white text-center font-semibold text-sm m-0 rounded-md">
@@ -285,7 +285,7 @@ const InternaitionaButtonCampaign = () => {
           </div>
 
           {/* Right Column */}
-          <div className="w-3/5 flex flex-col gap-6">
+          <div className="lg:w-full w-3/5 flex flex-col gap-6">
             {/* Status Section */}
             <div className="flex gap-4">
               <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#0d0c0d] text-center">

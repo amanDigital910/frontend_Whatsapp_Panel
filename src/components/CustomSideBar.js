@@ -46,8 +46,8 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             label: "Wa Virtual",
             icon: whatsappIcon,
             dropdown: [
-                { label: "Quick Campaign", to: "/user/virtualcampaign" },
-                { label: "CSV Campaign", to: "/user/csvvirtual" },
+                { label: "Quick / CSV Campaign", to: "/user/virtualcampaign" },
+                // { label: "CSV Campaign", to: "/user/csvvirtual" },
                 { label: "Button Campaign", to: "/user/buttoncampaign" },
                 { label: "DP Campaign", to: "/user/dpcampaign" },
                 { label: "Poll Campaign", to: "/user/pollcampaign" }, //new One
@@ -58,22 +58,22 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             label: "Wa Personal",
             icon: whatsappIcon,
             dropdown: [
-                { label: "Quick Campaign", to: "/personal/campaign" },
-                { label: "Personal Csv Campaign", to: "/personal/personal-csv" },
+                { label: "Quick / CSV Campaign", to: "/personal/campaign" },
+                // { label: "Personal Csv Campaign", to: "/personal/personal-csv" },
                 { label: "Button Campaign", to: "/personal/button" },
                 { label: "Group/Comm. Campaign", to: "/personal/group" }, //new One
                 { label: "Channel Create & \nSend Bulk Mess. Campaign", to: "/personal/group-community" }, //new One
                 { label: "Poll Campaign", to: "/personal/poll/campaign" },
                 { label: "WhatsApp Report", to: "/personal/report" },
-                { label: "WhatsApp Scan", to: "/personal/scan" }
+                { label: "Scan WhatsApp No.", to: "/personal/scan" }
             ]
         },
         {
             label: "Wa Int. Virtual",
             icon: world,
             dropdown: [
-                { label: "Quick Campaign", to: "/international/campaign" },
-                { label: "CSV Campaign", to: "/international/csvcampaign" },
+                { label: "Quick / CSV Campaign", to: "/international/campaign" },
+                // { label: "CSV Campaign", to: "/international/csvcampaign" },
                 { label: "Button Campaign", to: "/international/buttoncampaign" },
                 { label: "Whatsapp Reports", to: "/international/whatsappreport" }
             ]
@@ -82,18 +82,13 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             label: "Wa Int. Personal",
             icon: exchange,
             dropdown: [
-                { label: "Quick Campaign", to: "/international/personal/campaign" },
-                { label: "Csv Campaign", to: "/international/personal/csvcampaign" },
+                { label: "Quick / CSV Campaign", to: "/international/personal/campaign" },
+                // { label: "Csv Campaign", to: "/international/personal/csvcampaign" },
                 { label: "Button Campaign", to: "/international/personal/buttoncampaign" },
                 { label: "Poll Campaign", to: "/international/personal/pollcampaign" },
                 { label: "Whatsapp Reports", to: "/international/personal/report" },
-                { label: "Whatsapp Scan", to: "/international/personal/scan" }
+                { label: "Scan Whatsapp No.", to: "/international/personal/scan" }
             ]
-        },
-        {
-            label: "Group",
-            to: "/group",
-            icon: groupIcon
         },
         {
             label: "Template",
@@ -101,27 +96,32 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
             icon: templateIcon
         },
         {
-            label: "Manage User",
-            to: "/manageuser",
-            icon: UserIcon
+            label: "Group",
+            to: "/group",
+            icon: groupIcon
         },
         {
-            label: "Manage Credit",
+            label: "Manage Credits",
             to: "/managecredit",
             icon: creditCardIcon
+        },
+        {
+            label: "Manage Users",
+            to: "/manageuser",
+            icon: UserIcon
         },
     ];
 
     return (
         <>
             {(!isMobile || isOpen) && (
-                <div className={` ${isOpen ? "w-64" : "ml-20 w-0"} md:ml-0 text-white flex flex-nowrap md:absolute `}>
+                <div className={` ${isOpen ? "w-56" : "ml-20 w-0"} md:ml-0 text-white flex flex-nowrap md:absolute `}>
                     <div
                         style={{ height: "100%", paddingBottom: '151px', }}
-                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#120d50] text-white ${isOpen ? "w-[260px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
+                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#406dc7] text-white ${isOpen ? "w-[224px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
                     >
                         {/* Sidebar Header */}
-                        <div className={`relative w-full overflow-hidden border-r-2 border-[#120d50] ${isOpen ? "h-64" : "h-[70px]"}`}>
+                        <div className={`relative w-full overflow-hidden border-r-2 border-[#406dc7] ${isOpen ? "h-60" : "h-[70px]"}`}>
                             {/* Background Image */}
                             <img
                                 alt="Profile Background"

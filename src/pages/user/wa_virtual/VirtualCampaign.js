@@ -201,7 +201,7 @@ const VirtualCampaign = () => {
 
   return (
     <>
-      <section className="w-[100%] bg-gray-200 mt-[75px] flex justify-center flex-col">
+      <section className="w-[100%] bg-gray-200 flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full px-4 mt-8">
           <div className="w-full py-2 mb-3 bg-white">
@@ -209,8 +209,9 @@ const VirtualCampaign = () => {
               className="text-2xl text-black font-semibold pl-4"
               style={{ fontSize: "32px" }}
             >
-              Quick Campaign
+              Quick / CSV Campaign&nbsp;
             </h1>
+              Add CSV file upload button
           </div>
 
           <div className="flex gap-6">
