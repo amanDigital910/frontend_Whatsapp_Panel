@@ -1,15 +1,39 @@
-import React from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useState } from 'react'
 import menuIcon from '../assets/icons/paragraph.png';
 import bulkicon from '../assets/icons/wp bulk.png'
 import userImage from '../assets/profile.png';
 import useIsMobile from '../hooks/useMobileSize';
 import './style.css'
+import { FaPowerOff, FaUser } from 'react-icons/fa';
+import { BsPersonCircle } from 'react-icons/bs';
 
 const NavBar = ({ setIsOpen, isOpen }) => {
     const isMobile = useIsMobile();
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const handleOutsideClick = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsOpenMenu(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpenMenu) {
+            document.addEventListener('mousedown', handleOutsideClick);
+        } else {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [isOpenMenu]);
+
 
     return (
-        <nav className={`bg-[#383387] p-3 px-4 fixed w-full flex flex-wrap h-[70px] z-50 justify-between items-center text-white 
+        <nav className={`bg-[#383387] p-3 px-2 fixed w-full flex flex-wrap h-[70px] z-50 justify-between items-center text-white 
         ${isMobile ? 'left-0 w-full'
                 : isOpen ? 'left-[224px] w-[calc(100%-224px)]' : 'left-[80px] w-[calc(100%-80px)]'}`}>
             <div className={`flex gap-2 items-center justify-center h-full ${isMobile && 'ml-[80px]'} `}>
@@ -43,9 +67,26 @@ const NavBar = ({ setIsOpen, isOpen }) => {
                 <img src={bulkicon} alt="icon" width="30px" className='ms-4 h-8 flex' />
                 <h1 className="font-bold text-[30px] m-0 md:hidden">Whatsapp Bulk Marketing</h1>
             </div>
-            <div className="button-menu-mobile waves-effect hover:opacity-40 text-white cursor-pointer inline-block overflow-hidden select-none align-middle transition-all duration-300 ease-out">
-                <img src={userImage} alt="User Profile" width={40} height={20} className='flex flex-1 justify-end' />
+            <div className={`absolute top-4 right-6 flex flex-row hover:opacity-40 text-white cursor-pointer ${!isMobile ? isOpen ? "mr-60 " : "mr-24" : " mr-6"}`}
+                onClick={() => setIsOpenMenu(!isOpenMenu)}>
+                <img src={userImage} alt="User Profile" width={40} height={15} className='flex flex-1 justify-end' />
             </div>
+            {isOpenMenu && (
+                <div ref={dropdownRef} className={`absolute right-0 mt-48 w-48 bg-white border rounded-lg shadow-lg z-50 ${!isMobile ? isOpen ? "mr-[240px]" : "mr-[100px]" : "mr-6"}`}>
+                    <div className="bg-[#383387] text-white text-lg px-4 py-3 rounded-t-lg font-medium flex items-center gap-2 cursor-pointer">
+                        <BsPersonCircle /> User ID
+                    </div>
+                    {/* <div className="py-2"> */}
+                    {/* <button className="w-full px-4 py-2 flex items-center gap-2 text-black hover:bg-gray-100"> 
+                        <FaUser /> Profile
+                        </button> */}
+                    <button className="w-full px-4 py-3 flex items-center gap-2 text-black text-lg hover:bg-gray-100 border-2 rounded-b-lg border-[#383387] cursor-pointer">
+                        <FaPowerOff /> Logout
+                    </button>
+                    {/* </div> */}
+                </div>
+            )}
+
         </nav >
     )
 }

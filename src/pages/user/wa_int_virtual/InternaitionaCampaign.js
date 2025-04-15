@@ -5,10 +5,8 @@ import { MdDelete } from "react-icons/md";
 import CreditHeader from "../../../components/CreditHeader";
 import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
-import CampaignStatus from "../../utils/CampaignStatus";
-import CampaignHeading from "../../utils/CampaignHeading";
+import {CampaignStatus, CampaignHeading, CampaignTitle} from "../../utils/Index";
 import './style.css'
-import CampaignTitle from "../../utils/CampaignTitle";
 
 const InternaitionaQuickCampaign = () => {
   // State for campaign title.
@@ -250,7 +248,7 @@ const InternaitionaQuickCampaign = () => {
 
   return (
     <>
-      <section className="!w-full h-full bg-gray-200 overflow-hidden flex justify-center flex-col">
+      <section className="w-full h-full bg-gray-200 overflow-hidden flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full border-2 mt-8">
           <CampaignHeading campaignHeading={"Internaitional Quick Campaign"} />
