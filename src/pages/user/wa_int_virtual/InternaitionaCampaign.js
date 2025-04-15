@@ -5,8 +5,8 @@ import { MdDelete } from "react-icons/md";
 import CreditHeader from "../../../components/CreditHeader";
 import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
-import {CampaignStatus, CampaignHeading, CampaignTitle} from "../../utils/Index";
-import './style.css'
+import { CampaignStatus, CampaignHeading, CampaignTitle, GroupDropDown, CountryDropDown, WhatsappTextNumber, TemplateDropdown, RichTextEditor, PdfUploader, VideoUploader, SendNowButton } from "../../utils/Index";
+import ImageUploaderGroup from "../../utils/ImageUploaderGroup";
 
 const InternaitionaQuickCampaign = () => {
   // State for campaign title.
@@ -251,11 +251,14 @@ const InternaitionaQuickCampaign = () => {
       <section className="w-full h-full bg-gray-200 overflow-hidden flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full border-2 mt-8">
-          <CampaignHeading campaignHeading={"Internaitional Quick Campaign"} />
+            <CampaignHeading campaignHeading={"Internaitional Quick Campaign"} />
+
           {/* <div className=""> */}
-          <div className="w-full px-6 py-6 flex lg:flex-col gap-6">
+          <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
+
             {/* Left Column */}
             <div className="lg:w-full w-2/5 flex flex-col gap-6">
+
               {/* Campaign Title */}
               <CampaignTitle
                 inputTitle={campaignTitle}
@@ -264,42 +267,21 @@ const InternaitionaQuickCampaign = () => {
               />
 
               {/* Group Dropdown */}
-              <select
-                className="form-select border-black py-2 px-4 rounded-md"
-                value={selectedGroup}
-                onChange={(e) => setSelectedGroup(e.target.value)}
-              >
-                <option value="">Select Your Group</option>
-                {groups.map((group) => (
-                  <option key={group.groupId} value={group.groupId}>
-                    {group.group_name}
-                  </option>
-                ))}
-              </select>
+              <GroupDropDown
+                selectedGroup={selectedGroup}
+                setSelectedGroup={setSelectedGroup}
+                groups={groups} />
 
               {/* Country Dropdown */}
-              <select
-                className="form-select border-black py-2 px-4 rounded-md"
-                value={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-              >
-                <option value="">Select Country</option>
-                {countries.map((country, index) => (
-                  <option key={index} value={country.dialCode}>
-                    {country.name} (+{country.dialCode})
-                  </option>
-                ))}
-              </select>
+              <CountryDropDown
+                selectedCountry={selectedCountry}
+                setSelectedCountry={setSelectedCountry}
+                countries={countries} />
 
               {/* WhatsApp Numbers Textarea */}
-              <textarea
-                className="w-full p-4 rounded-md bg-white text-black border-black form-control placeholder-gray-500"
-                placeholder="Enter WhatsApp Number"
-                rows={10}
-                style={{ height: "100%" }}
-                value={whatsAppNumbers}
-                onChange={(e) => setWhatsAppNumbers(e.target.value)}
-              ></textarea>
+              <WhatsappTextNumber
+                whatsAppNumbers={whatsAppNumbers}
+                setWhatsAppNumbers={setWhatsAppNumbers} />
             </div>
 
             {/* Right Column */}
@@ -313,178 +295,48 @@ const InternaitionaQuickCampaign = () => {
               />
 
               {/* Template Dropdown */}
-              <select
-                className="form-select form-control border-black py-2 px-4 rounded-md"
-                value={selectedTemplate}
-                onChange={(e) => {
-                  const templateId = e.target.value;
-                  setSelectedTemplate(templateId);
-                  const template = msgTemplates.find(
-                    (t) => t.templateId.toString() === templateId
-                  );
-                  if (template) {
-                    setEditorData(template.template_msg);
-                  }
-                }}
-              >
-                <option value="">Select Your Template</option>
-                {msgTemplates.map((template) => (
-                  <option key={template.templateId} value={template.templateId}>
-                    {template.template_name}
-                  </option>
-                ))}
-              </select>
+              <TemplateDropdown
+                msgTemplates={msgTemplates}
+                selectedTemplate={selectedTemplate}
+                setEditorData={setEditorData}
+                setSelectedTemplate={setSelectedTemplate} />
 
               {/* Rich Text Editor */}
               <div className="w-full border border-black rounded-b-none rounded-[11px] ">
-                <FroalaEditor
-                  tag="textarea"
-                  className="rounded-[11px]"
-                  config={{
-                    placeholderText: "Enter your text here...",
-                    charCounterCount: true,
-                    toolbarButtons: ["bold", "underline", "italic", ""],
-                    quickInsertButtons: [],
-                    pluginsEnabled: [],
-                    height: 300,
-                    events: {
-                      initialized: function () {
-                        const secondToolbar = document.querySelector(".fr-second-toolbar");
-                        if (secondToolbar) secondToolbar.style.color = "white";
-                      },
-                    },
-                  }}
-                  model={editorData}
-                  onModelChange={(data) => setEditorData(data)}
-                />
+                <RichTextEditor
+                  editorData={editorData}
+                  setEditorData={setEditorData} />
               </div>
 
               {/* File Upload Section */}
               <div className="bg-white rounded p-4 border border-black flex flex-col gap-6 ">
-                <h6 className="font-semibold">Upload Image (Max 2MB):</h6>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {["image1", "image2", "image3", "image4"].map((type, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="bg-green-600 text-white py-2 px-4 rounded"
-                          onClick={() => inputRefs[type].current.click()}
-                        >
-                          Image {index + 1}
-                        </button>
-                        <input
-                          type="file"
-                          ref={inputRefs[type]}
-                          className="hidden"
-                          onChange={(e) => handleFileUpload(e, type)}
-                        />
-                        <input
-                          type="text"
-                          maxLength={1500}
-                          className="flex-1 border border-gray-300 py-2 px-3 rounded-lg"
-                          placeholder={`Enter caption for Image ${index + 1}`}
-                          value={mediaCaptions[type] || ""}
-                          onChange={(e) =>
-                            setMediaCaptions((prev) => ({ ...prev, [type]: e.target.value }))
-                          }
-                        />
-                      </div>
-                      {uploadedFiles[type] && (
-                        <div className="relative w-full h-[250px] border border-gray-200 rounded overflow-hidden">
-                          <img
-                            src={uploadedFiles[type].preview}
-                            alt={`Uploaded ${type}`}
-                            className="absolute top-0 left-0 w-full h-full object-contain z-0"
-                          />
-                          <MdDelete
-                            className="text-red-500 absolute top-2 right-2 text-xl z-10 cursor-pointer"
-                            onClick={() => removeFile(type)}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <ImageUploaderGroup
+                  inputRefs={inputRefs}
+                  uploadedFiles={uploadedFiles}
+                  handleFileUpload={handleFileUpload}
+                  removeFile={removeFile}
+                  mediaCaptions={mediaCaptions}
+                  setMediaCaptions={setMediaCaptions}
+                />
 
-                {/* PDF and Video Upload Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* PDF */}
-                  <div className="flex flex-col gap-2">
-                    <h6 className="font-semibold">PDF (Max 15MB):</h6>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="bg-green-600 text-white py-2 px-6 rounded whitespace-nowrap"
-                        onClick={() => inputRefs.pdf.current.click()}
-                      >
-                        Upload PDF
-                      </button>
-                      <input
-                        type="file"
-                        ref={inputRefs.pdf}
-                        className="hidden"
-                        onChange={(e) => handleFileUpload(e, "pdf")}
-                      />
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 py-2 px-3 rounded-lg"
-                        placeholder="Enter caption for PDF"
-                        value={mediaCaptions.pdf || ""}
-                        onChange={(e) =>
-                          setMediaCaptions((prev) => ({ ...prev, pdf: e.target.value }))
-                        }
-                      />
-                    </div>
-                    {uploadedFiles.pdf && (
-                      <div className="relative w-full h-[250px] flex justify-center items-center border border-gray-200 rounded">
-                        <FaFilePdf className="text-[150px] text-red-400" />
-                        <MdDelete
-                          className="text-red-500 absolute top-2 right-2 text-xl cursor-pointer"
-                          onClick={() => removeFile("pdf")}
-                        />
-                      </div>
-                    )}
-                  </div>
+                <div className="grid grid-cols-1 gap-6">
+                  <PdfUploader
+                    inputRef={inputRefs.pdf}
+                    uploadedFile={uploadedFiles.pdf}
+                    onFileUpload={handleFileUpload}
+                    onRemove={removeFile}
+                    caption={mediaCaptions.pdf || ""}
+                    onCaptionChange={(val) => setMediaCaptions((prev) => ({ ...prev, pdf: val }))}
+                  />
 
-                  {/* Video */}
-                  <div className="flex flex-col gap-2">
-                    <h6 className="font-semibold">Video (Max 15MB):</h6>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="bg-green-600 text-white py-2 px-6 rounded whitespace-nowrap"
-                        onClick={() => inputRefs.video.current.click()}
-                      >
-                        Upload Video
-                      </button>
-                      <input
-                        type="file"
-                        ref={inputRefs.video}
-                        className="hidden"
-                        onChange={(e) => handleFileUpload(e, "video")}
-                      />
-                      <input
-                        type="text"
-                        className="w-full border border-gray-300 py-2 px-3 rounded-lg"
-                        placeholder="Enter caption for Video"
-                        value={mediaCaptions.video || ""}
-                        onChange={(e) =>
-                          setMediaCaptions((prev) => ({ ...prev, video: e.target.value }))
-                        }
-                      />
-                    </div>
-                    {uploadedFiles.video && (
-                      <div className="relative w-full h-[250px] border border-gray-200 rounded overflow-hidden">
-                        <video
-                          src={uploadedFiles.video.preview}
-                          className="w-full h-full object-contain"
-                          controls
-                        />
-                        <MdDelete
-                          className="text-red-500 absolute top-2 right-2 text-xl cursor-pointer"
-                          onClick={() => removeFile("video")}
-                        />
-                      </div>
-                    )}
-                  </div>
+                  <VideoUploader
+                    inputRef={inputRefs.video}
+                    uploadedFile={uploadedFiles.video}
+                    onFileUpload={handleFileUpload}
+                    onRemove={removeFile}
+                    caption={mediaCaptions.video || ""}
+                    onCaptionChange={(val) => setMediaCaptions((prev) => ({ ...prev, video: val }))}
+                  />
                 </div>
               </div>
             </div>
@@ -494,15 +346,11 @@ const InternaitionaQuickCampaign = () => {
 
 
         {/* Send Now Button */}
-        <div className="px-3 mt-3 mb-5">
-          <button
-            className="w-full rounded-md bg-green-600 py-3 text-white text-2xl capitalize font-semibold flex items-center justify-center hover:bg-green-500 transition duration-300"
-            onClick={handleSendCampaign}
-          >
-            Send Now
-          </button>
+        <div className="px-3 mb-5">
+          <SendNowButton
+            handleSendCampaign={handleSendCampaign} />
         </div>
-      </section >
+      </section>
     </>
   );
 };

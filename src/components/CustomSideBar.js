@@ -115,13 +115,13 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
     return (
         <>
             {(!isMobile || isOpen) && (
-                <div className={` ${isOpen ? "w-56" : "ml-20 w-0"} md:ml-0 text-white flex flex-nowrap md:absolute `}>
+                <div className={` ${isOpen ? "w-60" : "ml-20 w-0"} md:ml-0 text-white flex flex-nowrap md:absolute `}>
                     <div
                         style={{ height: "100%", paddingBottom: '151px', }}
-                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#406dc7] text-white ${isOpen ? "w-[224px]" : "w-20"} z-50  overflow-y-auto hide-scrollbar`}
+                        className={`mt-[4.4rem] fixed top-0 left-0 h-full bg-[#406dc7] text-white ${isOpen ? "transition-all duration-100 ease-in w-60" : "w-20 transition-all duration-100 ease-out"} z-50  overflow-y-auto hide-scrollbar`}
                     >
                         {/* Sidebar Header */}
-                        <div className={`relative w-full overflow-hidden border-r-2 border-[#406dc7] ${isOpen ? "h-52" : "h-[70px]"}`}>
+                        <div className={`relative  overflow-hidden border-r-2 border-[#406dc7] ${isOpen ? "h-60  w-60 " : "h-[70px]"}`}>
                             {/* Background Image */}
                             <img
                                 alt="Profile Background"
@@ -153,7 +153,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                                 >
                                                     <div className={`flex items-center ${isOpen ? "space-x-2" : ""} justify-center`}>
                                                         <img src={item.icon} width={20} height={20} alt="" />
-                                                        {isOpen && <span className="text-base ">{item.label}</span>}
+                                                        {isOpen && <span className="text-lg ">{item.label}</span>}
                                                     </div>
                                                     {isOpen && (
                                                         <svg
@@ -176,7 +176,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                                                 <li key={subIndex} className='p-0' >
                                                                     <Link
                                                                         to={subItem.to}
-                                                                        className={`block pl-[42px] pr-2 py-2 text-sm text-white no-underline hover:underline underline-offset-4 ${isActiveSub ? 'bg-green-700 font-semibold' : ''}`}
+                                                                        className={`block pl-[42px] pr-2 py-2 text-base text-white no-underline hover:underline underline-offset-4 ${isActiveSub ? 'bg-green-700 font-semibold' : ''}`}
                                                                     >
                                                                         {subItem.label}
                                                                     </Link>
@@ -193,7 +193,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                                             >
                                                 <div className={`flex items-center ${isOpen ? "space-x-2" : ""} p-2 justify-center`}>
                                                     <img src={item.icon} width={20} height={20} alt="" />
-                                                    {isOpen && <span className="text-base">{item.label}</span>}
+                                                    {isOpen && <span className="text-lg">{item.label}</span>}
                                                 </div>
                                             </Link>
                                         )}

@@ -95,7 +95,7 @@ const App = () => {
         /> }
 
         {/* Main Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col ">
 
           {/* Topbar */}
           {!isLoginPage && <NavBar
@@ -103,7 +103,7 @@ const App = () => {
             setIsOpen={setIsOpen} /> }
 
           {/* Main Content */}
-          <div className={`flex-1 flex flex-col h-full ${!isLoginPage ? 'container mt-20' : ''} `}>
+          <div className={`flex-1 flex flex-col h-full  ${!isLoginPage ? ' mt-[70px]' : ''} `}>
             {/* Scrollable content area */}
             <div className="h-[100%] overflow-y-auto">
               <Suspense fallback={<div>Loading......</div>}>
