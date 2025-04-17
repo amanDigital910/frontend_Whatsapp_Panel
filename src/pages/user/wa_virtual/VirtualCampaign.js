@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 import CreditHeader from "../../../components/CreditHeader";
 import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
-import { CampaignHeading, CampaignStatus, CampaignTitle, CSVButton, GroupDropDown, PdfUploader, RichTextEditor, TemplateDropdown, VideoUploader, WhatsappTextNumber } from "../../utils/Index";
+import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, GroupDropDown, PdfUploader, RichTextEditor, TemplateDropdown, VideoUploader, WhatsappTextNumber } from "../../utils/Index";
 import ImageUploaderGroup from "../../utils/ImageUploaderGroup";
 
 const VirtualCampaign = () => {
@@ -18,6 +18,10 @@ const VirtualCampaign = () => {
 
   // Editor data state (will be sent as userMessage).
   const [editorData, setEditorData] = useState("");
+
+  // Country Calling details
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   // State for file uploads.
   // For images and video, we store an object with both file and preview.
@@ -65,6 +69,47 @@ const VirtualCampaign = () => {
       })
       .catch((error) => console.error("Error fetching groups:", error));
   }, [process.env.REACT_APP_API_URL]);
+
+  // Fetch countries from REST Countries API.
+  useEffect(() => {
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const countryData = response.data.map((country) => {
+          let dialCode = "";
+          if (
+            country.idd &&
+            country.idd.root &&
+            country.idd.suffixes &&
+            country.idd.suffixes.length > 0
+          ) {
+            // Combine root and suffix
+            dialCode = country.idd.root + country.idd.suffixes[0];
+          }
+
+          // Remove '+' for consistency
+          dialCode = dialCode.replace("+", "");
+
+          return {
+            name: country.name.common,
+            dialCode,
+          };
+        });
+
+        // Sort alphabetically
+        countryData.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set countries
+        setCountries(countryData);
+
+        // Set default country to India if found
+        const india = countryData.find((c) => c.name === "India");
+        if (india) {
+          setSelectedCountry(india.dialCode);
+        }
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
+  }, []);
 
   // Fetch message templates from the API.
   useEffect(() => {
@@ -206,9 +251,8 @@ const VirtualCampaign = () => {
       <section className="w-[100%] bg-gray-200 flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full mt-8">
-          <CampaignHeading campaignHeading={"Quick / CSV Campaign"} />
+          <CampaignHeading campaignHeading={"Virtual Quick / CSV Campaign"} />
 
-          Add CSV file upload button
           <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
             {/* Left Column */}
             <div className="w-2/5 flex flex-col gap-6">
@@ -216,7 +260,7 @@ const VirtualCampaign = () => {
               <CampaignTitle
                 inputTitle={campaignTitle}
                 setCampaignTitle={setCampaignTitle}
-                mainTitle={"Camapaign Title"} />
+                mainTitle={"Campaign Title"} />
 
               {/* Group Selection Dropdown */}
               <GroupDropDown
@@ -224,7 +268,13 @@ const VirtualCampaign = () => {
                 setSelectedGroup={setSelectedGroup}
                 groups={groups} />
 
-                <CSVButton />
+              <CSVButton />
+
+              {/* Country Dropdown */}
+              <CountryDropDown
+                selectedCountry={selectedCountry}
+                setSelectedCountry={setSelectedCountry}
+                countries={countries} />
 
               {/* WhatsApp Numbers Textarea */}
               <WhatsappTextNumber

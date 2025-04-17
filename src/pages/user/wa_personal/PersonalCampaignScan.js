@@ -74,7 +74,7 @@ const PersonalCampaignScan = () => {
 
   return (
     <>
-      <section className="w-full bg-gray-200 mt-[75px] flex justify-center flex-col pb-10">
+      <section className="w-full bg-gray-200  flex justify-center flex-col pb-10">
         <CreditHeader />
         <div className="w-full px-4">
           <div className="w-full flex justify-between bg-white mt-5 py-3 px-3">

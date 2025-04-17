@@ -192,7 +192,7 @@ function ManageCredit() {
 
     return (
         <>
-            <section className='w-[100%] bg-gray-200 mt-[75px] flex justify-center flex-col pb-10'>
+            <section className='w-[100%] bg-gray-200  flex justify-center flex-col pb-10'>
                 <CreditHeader />
                 <div className="w-full px-3 ">
                     <div className="container-fluid p-3 mt-5">

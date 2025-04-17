@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { FaFileUpload } from "react-icons/fa";
 import CreditHeader from "../../../components/CreditHeader";
 import userImage from "../../../assets/profile.png";
-import { FaFilePdf } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
-import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
+import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, GroupDropDown, PdfUploader, ProfileImageUploader, RichTextEditor, SendNowButton, TemplateDropdown, VideoUploader, WhatsappTextNumber } from "../../utils/Index";
+import ImageUploaderGroup from "../../utils/ImageUploaderGroup";
 
 const VirtualDpCampaign = () => {
   // Form and editor states
@@ -29,6 +27,12 @@ const VirtualDpCampaign = () => {
   // For preview of user profile
   const [userprofilePreview, setUserprofilePreview] = useState(null);
   const [fileType, setFileType] = useState("");
+
+  const [imageName, setImageName] = useState(null);
+
+  // Country Selector State
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   // Refs for file uploads (other media: images, PDF, video)
   const inputRefs = {
@@ -74,6 +78,47 @@ const VirtualDpCampaign = () => {
       .catch((error) =>
         console.error("Error fetching message templates:", error)
       );
+  }, []);
+
+  // Fetch countries from REST Countries API.
+  useEffect(() => {
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const countryData = response.data.map((country) => {
+          let dialCode = "";
+          if (
+            country.idd &&
+            country.idd.root &&
+            country.idd.suffixes &&
+            country.idd.suffixes.length > 0
+          ) {
+            // Combine root and suffix
+            dialCode = country.idd.root + country.idd.suffixes[0];
+          }
+
+          // Remove '+' for consistency
+          dialCode = dialCode.replace("+", "");
+
+          return {
+            name: country.name.common,
+            dialCode,
+          };
+        });
+
+        // Sort alphabetically
+        countryData.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set countries
+        setCountries(countryData);
+
+        // Set default country to India if found
+        const india = countryData.find((c) => c.name === "India");
+        if (india) {
+          setSelectedCountry(india.dialCode);
+        }
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
   }, []);
 
   // Update WhatsApp numbers when a group is selected.
@@ -189,6 +234,7 @@ const VirtualDpCampaign = () => {
     formData.append("selectedTemplate", selectedTemplate);
     formData.append("whatsAppNumbers", whatsAppNumbers);
     formData.append("userMessage", editorData);
+    formData.append("countryCode", selectedCountry);
     // Append media captions
     formData.append("image1Caption", mediaCaptions.image1 || "");
     formData.append("image2Caption", mediaCaptions.image2 || "");
@@ -238,339 +284,119 @@ const VirtualDpCampaign = () => {
   };
 
   return (
-    <section className="w-full bg-gray-200 flex justify-center flex-col mt-[75px]">
+    <section className="w-full bg-gray-200 flex justify-center flex-col">
       <CreditHeader />
-      <div className="w-full px-4 mt-8">
-        <div className="w-full py-2 mb-3 bg-white">
-          <h1
-            className="text-2xl text-black font-semibold pl-4"
-            style={{ fontSize: "32px" }}
-          >
-            DP Campaign
-          </h1>
-        </div>
+      <div className="w-full mt-8">
+        <CampaignHeading campaignHeading={"Virtual DP Campaign"} />
 
-        <div className="flex gap-6 mb-3">
-          {/* Left Column: Campaign Title, Group Selection & WhatsApp Numbers */}
-          <div className="w-2/5 flex flex-col gap-6">
+        {/* <div className=""> */}
+        <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
+
+          {/* Left Column */}
+          <div className="lg:w-full w-2/5 flex flex-col gap-6">
+
             {/* Campaign Title */}
-            <div className="flex items-center">
-              <p className="w-1/3 py-2 bg-brand_colors text-white text-center font-semibold text-sm m-0 rounded-md">
-                Campaign Title
-              </p>
-              <input
-                type="text"
-                className="w-full border-black form-control rounded-md py-2 px-4 text-black placeholder-gray-500"
-                placeholder="Enter Campaign Title"
-                value={campaignTitle}
-                onChange={(e) => setCampaignTitle(e.target.value)}
-              />
-            </div>
+            <CampaignTitle
+              inputTitle={campaignTitle}
+              mainTitle="Campaign Title"
+              setCampaignTitle={setCampaignTitle}
+            />
 
             {/* Group Dropdown */}
-            <div className="flex items-center gap-4">
-              <select
-                className="form-select border-black"
-                value={selectedGroup}
-                onChange={(e) => setSelectedGroup(e.target.value)}
-              >
-                <option value="">Select Your Group</option>
-                {groups.map((group) => (
-                  <option key={group.groupId} value={group.groupId}>
-                    {group.group_name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <GroupDropDown
+              selectedGroup={selectedGroup}
+              setSelectedGroup={setSelectedGroup}
+              groups={groups} />
+
+            {/* CSV Button Dropdown */}
+            <CSVButton />
+
+            {/* Country Dropdown */}
+            <CountryDropDown
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+              countries={countries} />
 
             {/* WhatsApp Numbers Textarea */}
-            <div className="w-full">
-              <textarea
-                className="w-full p-4 rounded-md bg-white text-black border-black form-control placeholder-gray-500"
-                placeholder="Enter WhatsApp Number"
-                rows={8}
-                style={{ height: "510px" }}
-                value={whatsAppNumbers}
-                onChange={(e) => setWhatsAppNumbers(e.target.value)}
-              ></textarea>
-            </div>
+            <WhatsappTextNumber
+              whatsAppNumbers={whatsAppNumbers}
+              setWhatsAppNumbers={setWhatsAppNumbers} />
           </div>
 
           {/* Right Column: Status, Template Selection, Image/Editor & File Uploads */}
-          <div className="w-3/5 flex flex-col gap-6">
-            {/* Status Section */}
-            <div className="flex gap-4">
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#0d0c0d] text-center">
-                Total 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#033b01] text-center">
-                Valid 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#f70202] text-center">
-                InValid 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#8a0418] text-center">
-                Duplicate 0
-              </div>
-            </div>
+          <div className="lg:w-full w-3/5 flex flex-col gap-6">
+            {/* Status */}
+            <CampaignStatus
+              duplicateStatus={0}
+              invalidStatus={0}
+              totalStatus={0}
+              validStatus={0}
+            />
 
             {/* Template Dropdown */}
-            <div className="w-full">
-              <select
-                className="form-select border-black"
-                aria-label="Select Template"
-                value={selectedTemplate}
-                onChange={handleTemplateChange}
-              >
-                <option value="">Select Your Template</option>
-                {msgTemplates.map((template) => (
-                  <option key={template.templateId} value={template.templateId}>
-                    {template.template_name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <TemplateDropdown
+              msgTemplates={msgTemplates}
+              selectedTemplate={selectedTemplate}
+              setEditorData={setEditorData}
+              setSelectedTemplate={setSelectedTemplate} />
 
             {/* Image + Editor Section */}
-            <div className="w-full flex gap-3">
-              <div className="w-[20%] flex flex-col gap-1">
-                <div className="w-full h-[110px]">
-                  <img
-                    src={userprofilePreview ? userprofilePreview : userImage}
-                    className="w-full h-full rounded cursor-pointer"
-                    alt="Profile"
-                  />
-                </div>
-                <input
-                  type="file"
-                  onChange={handleUserprofileChange}
-                  className="text-white"
-                  accept="image/*"
-                />
-                {userprofilePreview && (
-                  <button
-                    onClick={() => {
-                      setUserprofile(null);
-                      setUserprofilePreview(null);
-                    }}
-                    className="text-white px-3 py-2 rounded"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
+            <div className="w-full flex lg:flex-col gap-3">
+              <ProfileImageUploader
+                userImage={userImage}
+                userprofilePreview={userprofilePreview}
+                handleUserprofileChange={handleUserprofileChange}
+                setUserprofile={setUserprofile}
+                setUserprofilePreview={setUserprofilePreview}
+                imageName={imageName}
+                setImageName={setImageName}
+              />
 
-              <div className="w-full flex flex-col gap-6 border border-black rounded">
-                <div className="w-full">
-                  <FroalaEditor
-                    tag="textarea"
-                    config={{
-                      placeholderText: "Enter your text here...",
-                      charCounterCount: true,
-                      toolbarButtons: ["bold", "italic", "formatOL"],
-                      quickInsertButtons: [],
-                      pluginsEnabled: [],
-                    }}
-                    model={editorData}
-                    onModelChange={(data) => setEditorData(data)}
-                  />
-                </div>
+              {/* Froala Editor for Custom Message */}
+              <div className="w-full border border-black rounded-b-none rounded-[11px] ">
+                <RichTextEditor
+                  editorData={editorData}
+                  setEditorData={setEditorData} />
               </div>
             </div>
 
             {/* File Uploads Section */}
-            <div className="w-full h-auto bg-white rounded p-3 border border-black">
-              <div className="w-full flex flex-col gap-4">
-                <h6>Upload Image (File size 2 MB.) :</h6>
-                <div className="w-full grid grid-cols-2 gap-4">
-                  {["image1", "image2", "image3", "image4"].map(
-                    (type, index) => (
-                      <div key={index} className="w-full flex gap-4">
-                        <input
-                          type="file"
-                          className="hidden"
-                          ref={inputRefs[type]}
-                          onChange={(e) => handleFileUpload(e, type)}
-                        />
-                        <div className="w-full flex flex-col gap-2">
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="flex cursor-pointer"
-                              onClick={() => inputRefs[type].current.click()}
-                            >
-                              <button
-                                className="bg-green-600 text-white py-2 text-center rounded"
-                                style={{
-                                  paddingLeft: "15px",
-                                  paddingRight: "15px",
-                                }}
-                              >
-                                Image {index + 1}
-                              </button>
-                            </div>
-                            <input
-                              type="text"
-                              maxLength={1500}
-                              className="w-[300px] border border-gray-300 py-2 px-3 rounded-lg"
-                              placeholder={`Enter a caption for Image ${
-                                index + 1
-                              }`}
-                              value={mediaCaptions[type] || ""}
-                              onChange={(e) =>
-                                setMediaCaptions((prev) => ({
-                                  ...prev,
-                                  [type]: e.target.value,
-                                }))
-                              }
-                            />
-                          </div>
-                          {uploadedFiles[type] && (
-                            <div className="w-full h-[250px] relative p-2 rounded border border-gray-200">
-                              <img
-                                src={uploadedFiles[type].preview}
-                                alt={`Uploaded ${type}`}
-                                className="absolute z-0 w-full h-full object-contain"
-                              />
-                              <MdDelete
-                                className="text-[25px] cursor-pointer text-red-500 absolute z-10 top-2 right-2"
-                                onClick={() => removeFile(type)}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-                <hr />
-                <div className="w-full flex gap-4">
-                  {/* PDF Upload */}
-                  <div className="w-full">
-                    <h6>PDF (File size 10 MB.) :</h6>
-                    <div className="w-full flex gap-4">
-                      <input
-                        type="file"
-                        className="hidden"
-                        ref={inputRefs.pdf}
-                        onChange={(e) => handleFileUpload(e, "pdf")}
-                      />
-                      <div className="w-full flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="flex cursor-pointer"
-                            onClick={() => inputRefs.pdf.current.click()}
-                          >
-                            <button
-                              className="bg-green-600 text-white py-2 text-center rounded"
-                              style={{
-                                paddingLeft: "29px",
-                                paddingRight: "29px",
-                              }}
-                            >
-                              PDF
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            maxLength={1500}
-                            className="w-full border border-gray-300 py-2 px-3 rounded-lg"
-                            placeholder="Enter a caption for PDF"
-                            value={mediaCaptions.pdf || ""}
-                            onChange={(e) =>
-                              setMediaCaptions((prev) => ({
-                                ...prev,
-                                pdf: e.target.value,
-                              }))
-                            }
-                          />
-                        </div>
-                        {uploadedFiles.pdf && (
-                          <div className="w-full h-[250px] relative p-2 rounded border border-gray-200">
-                            <div className="w-full h-full flex justify-center items-center">
-                              <FaFilePdf className="text-[150px] text-red-400" />
-                            </div>
-                            <MdDelete
-                              className="text-[25px] cursor-pointer text-red-500 absolute z-10 top-2 right-2"
-                              onClick={() => removeFile("pdf")}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Video Upload */}
-                  <div className="w-full">
-                    <h6>Video (File size 15 MB.) :</h6>
-                    <div className="w-full flex gap-4">
-                      <input
-                        type="file"
-                        className="hidden"
-                        ref={inputRefs.video}
-                        onChange={(e) => handleFileUpload(e, "video")}
-                      />
-                      <div className="w-full flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="flex cursor-pointer"
-                            onClick={() => inputRefs.video.current.click()}
-                          >
-                            <button
-                              className="bg-green-600 text-white py-2 text-center rounded"
-                              style={{
-                                paddingLeft: "24px",
-                                paddingRight: "24px",
-                              }}
-                            >
-                              Video
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            maxLength={1500}
-                            className="w-full border border-gray-300 py-2 px-3 rounded-lg"
-                            placeholder="Enter a caption for Video"
-                            value={mediaCaptions.video || ""}
-                            onChange={(e) =>
-                              setMediaCaptions((prev) => ({
-                                ...prev,
-                                video: e.target.value,
-                              }))
-                            }
-                          />
-                        </div>
-                        {uploadedFiles.video && (
-                          <div className="w-full h-[250px] relative p-2 rounded border border-gray-200">
-                            <video
-                              src={uploadedFiles.video.preview}
-                              className="w-full h-full object-contain"
-                              controls
-                            />
-                            <MdDelete
-                              className="text-[25px] cursor-pointer text-red-500 absolute z-10 top-2 right-2"
-                              onClick={() => removeFile("video")}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="bg-white rounded p-4 border border-black flex flex-col gap-6 ">
+              <ImageUploaderGroup
+                inputRefs={inputRefs}
+                uploadedFiles={uploadedFiles}
+                handleFileUpload={handleFileUpload}
+                removeFile={removeFile}
+                mediaCaptions={mediaCaptions}
+                setMediaCaptions={setMediaCaptions}
+              />
+
+              <div className="grid grid-cols-1 gap-6">
+                <PdfUploader
+                  inputRef={inputRefs.pdf}
+                  uploadedFile={uploadedFiles.pdf}
+                  onFileUpload={handleFileUpload}
+                  onRemove={removeFile}
+                  caption={mediaCaptions.pdf || ""}
+                  onCaptionChange={(val) => setMediaCaptions((prev) => ({ ...prev, pdf: val }))}
+                />
+
+                <VideoUploader
+                  inputRef={inputRefs.video}
+                  uploadedFile={uploadedFiles.video}
+                  onFileUpload={handleFileUpload}
+                  onRemove={removeFile}
+                  caption={mediaCaptions.video || ""}
+                  onCaptionChange={(val) => setMediaCaptions((prev) => ({ ...prev, video: val }))}
+                />
               </div>
-              {/* End of Uploads Section */}
             </div>
           </div>
         </div>
-
-        {/* Send Button */}
-        <div className="w-full mb-3">
-          <button
-            onClick={handleSend}
-            className="w-full rounded-md bg-green-600 py-3 text-white font-semibold flex items-center justify-center hover:bg-green-500 transition duration-300"
-          >
-            Send Now
-          </button>
-        </div>
       </div>
+
+      {/* Send Button */}
+      <SendNowButton handleSendCampaign={handleSend} />
     </section>
   );
 };

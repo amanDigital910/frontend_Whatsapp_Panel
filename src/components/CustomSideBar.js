@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import creditCardIcon from '../assets/icons/credit-card.png';
 import dashboardIcon from '../assets/icons/dashboard.png';
@@ -6,7 +6,6 @@ import home from '../assets/icons/home.png';
 import world from '../assets/icons/world.png';
 import exchange from '../assets/icons/exchange.png';
 import groupIcon from '../assets/icons/group.png';
-import menuIcon from '../assets/icons/paragraph.png';
 import templateIcon from '../assets/icons/template.png';
 import ProfileIcon from '../assets/profile_Logo.png';
 import UserIcon from '../assets/icons/user1.png';
@@ -50,7 +49,7 @@ const SideBar = ({ isOpen, toggleDropdown, activeDropdown }) => {
                 // { label: "CSV Campaign", to: "/user/csvvirtual" },
                 { label: "Button Campaign", to: "/user/buttoncampaign" },
                 { label: "DP Campaign", to: "/user/dpcampaign" },
-                { label: "Poll Campaign", to: "/user/pollcampaign" }, //new One
+                { label: "Poll Campaign", to: "/user/virtualpollcampaign" }, //new One
                 { label: "WhatsApp Report", to: "/user/whatsappreport" }
             ]
         },

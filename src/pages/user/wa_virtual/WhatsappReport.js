@@ -25,7 +25,7 @@ const WhatsappReport = () => {
 
   return (
     <>
-      <section className="w-[100%] bg-gray-200 pb-[200px] mt-[75px]">
+      <section className="w-[100%] bg-gray-200 pb-[200px] ">
         <CreditHeader />
         <div className="w-full px-4 mt-8">
           <div className="w-full py-2 mb-3 bg-white">

@@ -6,6 +6,7 @@ import { FaFilePdf } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
+import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, DisplayButton, DragDropButton, GroupDropDown, RichTextEditor, SendNowButton, TemplateDropdown, WhatsappTextNumber } from "../../utils/Index";
 
 const VirtualButtonCampaign = () => {
   // File and editor states
@@ -15,6 +16,10 @@ const VirtualButtonCampaign = () => {
   const [selectedFileObj, setSelectedFileObj] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [caption, setCaption] = useState("");
+
+  // Group Country Button
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [countries, setCountries] = useState([]);
 
   // API fetched data
   const [groups, setGroups] = useState([]);
@@ -122,11 +127,53 @@ const VirtualButtonCampaign = () => {
     }
   }, [selectedGroup, groups]);
 
+  // Fetch countries from REST Countries API.
+  useEffect(() => {
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const countryData = response.data.map((country) => {
+          let dialCode = "";
+          if (
+            country.idd &&
+            country.idd.root &&
+            country.idd.suffixes &&
+            country.idd.suffixes.length > 0
+          ) {
+            // Combine root and suffix
+            dialCode = country.idd.root + country.idd.suffixes[0];
+          }
+
+          // Remove '+' for consistency
+          dialCode = dialCode.replace("+", "");
+
+          return {
+            name: country.name.common,
+            dialCode,
+          };
+        });
+
+        // Sort alphabetically
+        countryData.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set countries
+        setCountries(countryData);
+
+        // Set default country to India if found
+        const india = countryData.find((c) => c.name === "India");
+        if (india) {
+          setSelectedCountry(india.dialCode);
+        }
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
+  }, []);
+
   // Handle sending the campaign data via axios
   const handleSendCampaign = async () => {
     const formData = new FormData();
     formData.append("campaignTitle", campaignTitle);
     formData.append("selectedGroup", selectedGroup);
+    formData.append("countryCode", selectedCountry);
     formData.append("whatsAppNumbers", whatsAppNumbers);
     formData.append("userMessage", editorData);
     formData.append("selectedTemplate", selectedTemplate);
@@ -177,246 +224,104 @@ const VirtualButtonCampaign = () => {
   };
 
   return (
-    <section className="w-[100%] bg-gray-200 flex justify-center flex-col mt-[75px] pb-5">
+    <section className="w-[100%] bg-gray-200 flex justify-center flex-col pb-5">
       <CreditHeader />
 
-      <div className="w-full px-4 mt-8">
-        <div className="w-full py-2 mb-3 bg-white">
-          <h1
-            className="text-2xl text-black font-semibold pl-4"
-            style={{ fontSize: "32px" }}
-          >
-            Button Campaign
-          </h1>
-        </div>
+      <div className="w-full mt-8">
+        <CampaignHeading campaignHeading={"Virtual Perosnal Button Campaign"} />
 
-        <div className="flex gap-6">
+        {/* <div className=""> */}
+        <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
+
           {/* Left Column */}
-          <div className="w-2/5 flex flex-col gap-6">
+          <div className="lg:w-full w-2/5 flex flex-col gap-6">
+
             {/* Campaign Title */}
-            <div className="flex items-center">
-              <p className="w-1/3 py-2 bg-brand_colors text-white text-center font-semibold text-sm m-0 rounded-md">
-                Campaign Title
-              </p>
-              <input
-                type="text"
-                value={campaignTitle}
-                onChange={(e) => setCampaignTitle(e.target.value)}
-                className="w-full border-black form-control rounded-md py-2 px-4 text-black placeholder-gray-500"
-                placeholder="Enter Campaign Title"
-              />
-            </div>
-            {/* Message Group Dropdown */}
-            <div className="flex items-center gap-4">
-              <select
-                className="form-select border-black"
-                aria-label="Select Message Group"
-                value={selectedGroup}
-                onChange={(e) => setSelectedGroup(e.target.value)}
-              >
-                <option value="">Select Group Number</option>
-                {groups.map((group) => (
-                  <option key={group.groupId} value={group.groupId}>
-                    {group.group_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {/* WhatsApp Numbers */}
-            <div className="w-full">
-              <textarea
-                className="w-full p-4 rounded-md bg-white text-black border-black form-control placeholder-gray-500"
-                placeholder="Enter WhatsApp Numbers (comma separated)"
-                rows={8}
-                style={{ height: "710px" }}
-                value={whatsAppNumbers}
-                onChange={(e) => setWhatsAppNumbers(e.target.value)}
-              ></textarea>
-            </div>
+            <CampaignTitle
+              inputTitle={campaignTitle}
+              mainTitle="Campaign Title"
+              setCampaignTitle={setCampaignTitle}
+            />
+
+            {/* Group Dropdown */}
+            <GroupDropDown
+              selectedGroup={selectedGroup}
+              setSelectedGroup={setSelectedGroup}
+              groups={groups} />
+
+            {/* CSV Button Dropdown */}
+            <CSVButton />
+
+            {/* Country Dropdown */}
+            <CountryDropDown
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+              countries={countries} />
+
+            {/* WhatsApp Numbers Textarea */}
+            <WhatsappTextNumber
+              whatsAppNumbers={whatsAppNumbers}
+              setWhatsAppNumbers={setWhatsAppNumbers} />
           </div>
 
           {/* Right Column */}
-          <div className="w-3/5 flex flex-col gap-6">
-            {/* Status Section */}
-            <div className="flex gap-4">
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#0d0c0d] text-center">
-                Total 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#033b01] text-center">
-                Valid 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#f70202] text-center">
-                InValid 0
-              </div>
-              <div className="w-full px-4 py-2 rounded-md text-white font-semibold bg-[#8a0418] text-center">
-                Duplicate 0
-              </div>
-            </div>
+          <div className="lg:w-full w-3/5 flex flex-col gap-6">
+            {/* Status */}
+            <CampaignStatus
+              duplicateStatus={0}
+              invalidStatus={0}
+              totalStatus={0}
+              validStatus={0}
+            />
 
-            {/* Message Template Dropdown */}
-            <div className="w-full">
-              <select
-                className="form-select form-control border-black"
-                value={selectedTemplate}
-                onChange={(e) => {
-                  const templateId = e.target.value;
-                  setSelectedTemplate(templateId);
-                  const template = msgTemplates.find(
-                    (t) => t.templateId.toString() === templateId.toString()
-                  );
-                  if (template) {
-                    setEditorData(template.template_msg);
-                  }
-                }}
-              >
-                <option value="">Select Your Template</option>
-                {msgTemplates.map((template) => (
-                  <option key={template.templateId} value={template.templateId}>
-                    {template.template_name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {/* Template Dropdown */}
+            <TemplateDropdown
+              msgTemplates={msgTemplates}
+              selectedTemplate={selectedTemplate}
+              setEditorData={setEditorData}
+              setSelectedTemplate={setSelectedTemplate} />
 
-            {/* Rich Text Editor */}
-            <div className="w-full flex flex-col gap-6 border border-black rounded">
-              <div className="w-full">
-                <FroalaEditor
-                  tag="textarea"
-                  config={{
-                    placeholderText: "Enter your text here...",
-                    charCounterCount: true,
-                    toolbarButtons: ["bold", "italic", "formatOL"],
-                    quickInsertButtons: [],
-                    pluginsEnabled: [],
-                    height: 300,
-                    events: {
-                      initialized: function () {
-                        const toolbar =
-                          document.querySelector(".fr-second-toolbar");
-                        if (toolbar) {
-                          toolbar.style.color = "white";
-                        }
-                      },
-                    },
-                  }}
-                  model={editorData}
-                  onModelChange={(data) => setEditorData(data)}
-                />
-              </div>
+            {/* Froala Editor for Custom Message */}
+            <div className="w-full border border-black rounded-b-none rounded-[11px] ">
+              <RichTextEditor
+                editorData={editorData}
+                setEditorData={setEditorData} />
             </div>
 
             {/* File Upload and Button Settings */}
             <div className="w-full">
-              <div
-                className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded flex justify-center items-center text-gray-500 hover:border-blue-400 hover:text-blue-400 cursor-pointer"
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={handleDrop}
-                onClick={() => inputRef.current.click()}
-              >
-                {selectedFile ? (
-                  <div className="w-full h-full relative">
-                    {fileType === "image" && (
-                      <img
-                        src={selectedFile}
-                        alt="Uploaded File"
-                        className="w-full h-full object-contain rounded"
-                      />
-                    )}
-                    {fileType === "video" && (
-                      <video
-                        src={selectedFile}
-                        className="w-full h-full object-contain rounded"
-                        controls
-                      />
-                    )}
-                    {fileType === "pdf" && (
-                      <div className="w-full h-full flex justify-center items-center">
-                        <FaFilePdf className="text-[150px] text-red-400" />
-                      </div>
-                    )}
-                    <MdDelete
-                      className="absolute top-2 right-2 text-[25px] text-red-500 cursor-pointer"
-                      onClick={removeFile}
-                    />
-                  </div>
-                ) : (
-                  <p className="text-center">
-                    Drag and drop your file here or click to upload
-                    image/PDF/Video
-                  </p>
-                )}
-              </div>
-
-              <input
-                ref={inputRef}
-                type="file"
-                accept="image/*,video/*,application/pdf"
-                className="hidden"
-                onChange={handleFileInputChange}
+              <DragDropButton
+                caption={caption}
+                setCaption={setCaption}
+                fileType={fileType}
+                handleDrop={handleDrop}
+                handleFileInputChange={handleFileInputChange}
+                inputRef={inputRef}
+                removeFile={removeFile}
+                selectedFile={selectedFile}
               />
 
-              {/* File Caption Input */}
-              {selectedFile && (
-                <div className="mt-3">
-                  <input
-                    type="text"
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                    placeholder="Enter file caption"
-                    className="w-full p-2 border border-gray-400 rounded"
-                  />
-                </div>
-              )}
-
               {/* Button Details */}
-              <div className="w-full mt-4">
-                <div className="w-full flex gap-3">
-                  <input
-                    placeholder="Button 1 Display Text (Call Now)"
-                    type="text"
-                    value={button1Text}
-                    onChange={(e) => setButton1Text(e.target.value)}
-                    className="w-[40%] p-2 rounded bg-white text-black border border-gray-300"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Max 10 digit number allowed"
-                    value={button1Number}
-                    onChange={(e) => setButton1Number(e.target.value)}
-                    className="w-[60%] p-2 rounded bg-white text-black border border-gray-300"
-                  />
-                </div>
-                <br />
-                <div className="w-full flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Button 2 Display Text (Visit Now)"
-                    value={button2Text}
-                    onChange={(e) => setButton2Text(e.target.value)}
-                    className="w-[40%] p-2 rounded bg-white text-black border border-gray-300"
-                  />
-                  <input
-                    type="text"
-                    placeholder="https://example.com/"
-                    value={button2Url}
-                    onChange={(e) => setButton2Url(e.target.value)}
-                    className="w-[60%] p-2 rounded bg-white text-black border border-gray-300"
-                  />
-                </div>
+              <div className="w-full mt-4 flex flex-col gap-6">
+                <DisplayButton
+                  buttonNumber={button1Number}
+                  buttonText={button1Text}
+                  setButtonNumber={setButton1Number}
+                  setButtonText={setButton1Text}
+                />
+                <DisplayButton
+                  buttonNumber={button2Url}
+                  buttonText={button2Text}
+                  setButtonText={setButton2Url}
+                  setButtonNumber={setButton2Url}
+                />
               </div>
             </div>
           </div>
         </div>
+
         {/* Send Now Button */}
-        <div className="w-full mt-4">
-          <button
-            className="w-full rounded-md bg-green-600 py-3 text-white font-semibold flex items-center justify-center hover:bg-green-500 transition duration-300"
-            onClick={handleSendCampaign}
-          >
-            Send Now
-          </button>
-        </div>
+        <SendNowButton handleSendCampaign={handleSendCampaign} />
       </div>
     </section>
   );

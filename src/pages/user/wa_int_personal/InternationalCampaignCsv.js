@@ -311,7 +311,7 @@ const VirtualCampaign = () => {
   };
 
   return (
-    <section className="w-full bg-gray-200 mt-[75px] flex flex-col">
+    <section className="w-full bg-gray-200  flex flex-col">
       <CreditHeader />
       <div className="w-full px-4 mt-8">
         <div className="w-full py-2 mb-3 bg-white">

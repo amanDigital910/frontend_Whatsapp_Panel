@@ -1,11 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { FaFileUpload } from "react-icons/fa";
 import CreditHeader from "../../../components/CreditHeader";
-import Notes from "../../../components/Notes";
-import { FaFilePdf } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
-import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, DelayButtonDetails, GroupDropDown, PdfUploader, PollCampaign, RichTextEditor, SendNowButton, TemplateDropdown, VideoUploader, WhatsappTextNumber } from "../../utils/Index";
 import ImageUploaderGroup from "../../utils/ImageUploaderGroup";
@@ -19,6 +14,8 @@ const PersonalCampaignPoll = () => {
 
   // Editor content (sent as userMessage)
   const [editorData, setEditorData] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   // Media file uploads – images and video are stored as an object (with file and preview)
   const [uploadedFiles, setUploadedFiles] = useState({
@@ -54,10 +51,6 @@ const PersonalCampaignPoll = () => {
   const [msgTemplates, setMsgTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState("");
 
-  //Group Dropdown
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("");
-
   // Delay between messages
   const [delayBetweenMessages, setDelayBetweenMessages] = useState("");
 
@@ -75,48 +68,6 @@ const PersonalCampaignPoll = () => {
       .catch((error) => console.error("Error fetching groups:", error));
   }, []);
 
-  // Fetch countries from REST Countries API.
- // Fetch countries from REST Countries API.
- useEffect(() => {
-  axios
-    .get("https://restcountries.com/v3.1/all")
-    .then((response) => {
-      const countryData = response.data.map((country) => {
-        let dialCode = "";
-        if (
-          country.idd &&
-          country.idd.root &&
-          country.idd.suffixes &&
-          country.idd.suffixes.length > 0
-        ) {
-          // Combine root and suffix
-          dialCode = country.idd.root + country.idd.suffixes[0];
-        }
-
-        // Remove '+' for consistency
-        dialCode = dialCode.replace("+", "");
-
-        return {
-          name: country.name.common,
-          dialCode,
-        };
-      });
-
-      // Sort alphabetically
-      countryData.sort((a, b) => a.name.localeCompare(b.name));
-
-      // Set countries
-      setCountries(countryData);
-
-      // Set default country to India if found
-      const india = countryData.find((c) => c.name === "India");
-      if (india) {
-        setSelectedCountry(india.dialCode);
-      }
-    })
-    .catch((error) => console.error("Error fetching countries:", error));
-}, []);
-
   // Fetch message templates from your API
   useEffect(() => {
     axios
@@ -125,6 +76,47 @@ const PersonalCampaignPoll = () => {
       .catch((error) =>
         console.error("Error fetching message templates:", error)
       );
+  }, []);
+  
+   // Fetch countries from REST Countries API.
+   useEffect(() => {
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const countryData = response.data.map((country) => {
+          let dialCode = "";
+          if (
+            country.idd &&
+            country.idd.root &&
+            country.idd.suffixes &&
+            country.idd.suffixes.length > 0
+          ) {
+            // Combine root and suffix
+            dialCode = country.idd.root + country.idd.suffixes[0];
+          }
+
+          // Remove '+' for consistency
+          dialCode = dialCode.replace("+", "");
+
+          return {
+            name: country.name.common,
+            dialCode,
+          };
+        });
+
+        // Sort alphabetically
+        countryData.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set countries
+        setCountries(countryData);
+
+        // Set default country to India if found
+        const india = countryData.find((c) => c.name === "India");
+        if (india) {
+          setSelectedCountry(india.dialCode);
+        }
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
   }, []);
 
   // When a group is selected, update the WhatsApp numbers field
@@ -233,11 +225,11 @@ const PersonalCampaignPoll = () => {
     formData.append("whatsAppNumbers", whatsAppNumbers);
     formData.append("userMessage", editorData);
     formData.append("selectedTemplate", selectedTemplate);
-    formData.append("countryCode", selectedCountry);
     formData.append("BetweenMessages", delayBetweenMessages);
     // Send poll question and options (stringify the options array)
     formData.append("pollQuestion", question);
     formData.append("pollOptions", JSON.stringify(inputs.slice(0, 7)));
+    formData.append("countryCode", selectedCountry);
 
     // Append media captions
     formData.append("image1Caption", mediaCaptions.image1);
@@ -258,7 +250,7 @@ const PersonalCampaignPoll = () => {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/PersonalCampaign/sendpersonalCampaign`,
+        `${process.env.REACT_APP_API_URL}/InternationalPersonalCampaign/sendInternationalpersonalCampaign`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -275,7 +267,7 @@ const PersonalCampaignPoll = () => {
       <section className="w-[100%] bg-gray-200 flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full border-2 mt-8">
-          <CampaignHeading campaignHeading={"Personal Poll Campaign"} />
+          <CampaignHeading campaignHeading={"Virtual Poll Campaign"} />
 
           {/* <div className=""> */}
           <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
@@ -289,7 +281,6 @@ const PersonalCampaignPoll = () => {
                 mainTitle="Campaign Title"
                 setCampaignTitle={setCampaignTitle}
               />
-
 
               {/* Group Dropdown */}
               <GroupDropDown
@@ -311,7 +302,6 @@ const PersonalCampaignPoll = () => {
                 whatsAppNumbers={whatsAppNumbers}
                 setWhatsAppNumbers={setWhatsAppNumbers} />
             </div>
-
             {/* Right Column – Templates, Message, Media, Poll & Delay */}
             <div className="lg:w-full w-3/5 flex flex-col gap-6">
               {/* Status */}

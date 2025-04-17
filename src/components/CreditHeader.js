@@ -15,8 +15,8 @@ const CreditHeader = () => {
           <p className="whitespace-nowrap p-0 m-0">WAVPOLL:&nbsp;<span>0</span></p>
           <p className="whitespace-nowrap p-0 m-0">WAP:&nbsp;<span>0</span></p>
           <p className="whitespace-nowrap p-0 m-0">WAPBT:&nbsp;<span>0</span></p>
-          <p className="whitespace-nowrap p-0 m-0">:&nbsp;<span>0</span></p>
-          <p className="whitespace-nowrap p-0 m-0">:&nbsp;<span>0</span></p>
+          <p className="whitespace-nowrap p-0 m-0">WAPGC:&nbsp;<span>0</span></p>
+          <p className="whitespace-nowrap p-0 m-0">WAPCCC:&nbsp;<span>0</span></p>
           <p className="whitespace-nowrap p-0 m-0">WAPPOLL:&nbsp;<span>0</span></p>
           {/* <p className="whitespace-nowrap p-0 m-0">WAINT:&nbsp;<span>0</span></p> */}
         </div>

@@ -5,10 +5,10 @@ import { MdDelete } from "react-icons/md";
 import CreditHeader from "../../../components/CreditHeader";
 import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
-import { CampaignStatus, CampaignHeading, CampaignTitle, GroupDropDown, CountryDropDown, WhatsappTextNumber, TemplateDropdown, RichTextEditor, PdfUploader, VideoUploader, SendNowButton } from "../../utils/Index";
+import { CampaignStatus, CampaignHeading, CampaignTitle, GroupDropDown, CountryDropDown, WhatsappTextNumber, TemplateDropdown, RichTextEditor, PdfUploader, VideoUploader, SendNowButton, CSVButton } from "../../utils/Index";
 import ImageUploaderGroup from "../../utils/ImageUploaderGroup";
 
-const InternaitionaQuickCampaign = () => {
+const InternationalQuickCampaign = () => {
   // State for campaign title.
   const [campaignTitle, setCampaignTitle] = useState("");
   // State for groups, selected group, and WhatsApp numbers.
@@ -251,7 +251,7 @@ const InternaitionaQuickCampaign = () => {
       <section className="w-full h-full bg-gray-200 overflow-hidden flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full border-2 mt-8">
-            <CampaignHeading campaignHeading={"Internaitional Quick Campaign"} />
+          <CampaignHeading campaignHeading={"International Virtual Quick Campaign"} />
 
           {/* <div className=""> */}
           <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
@@ -271,6 +271,8 @@ const InternaitionaQuickCampaign = () => {
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
                 groups={groups} />
+
+              <CSVButton />
 
               {/* Country Dropdown */}
               <CountryDropDown
@@ -298,8 +300,9 @@ const InternaitionaQuickCampaign = () => {
               <TemplateDropdown
                 msgTemplates={msgTemplates}
                 selectedTemplate={selectedTemplate}
+                setSelectedTemplate={setSelectedTemplate}
                 setEditorData={setEditorData}
-                setSelectedTemplate={setSelectedTemplate} />
+              />
 
               {/* Rich Text Editor */}
               <div className="w-full border border-black rounded-b-none rounded-[11px] ">
@@ -343,16 +346,11 @@ const InternaitionaQuickCampaign = () => {
           </div>
         </div>
 
-
-
         {/* Send Now Button */}
-        <div className="px-3 mb-5">
-          <SendNowButton
-            handleSendCampaign={handleSendCampaign} />
-        </div>
+          <SendNowButton handleSendCampaign={handleSendCampaign} />
       </section>
     </>
   );
 };
 
-export default InternaitionaQuickCampaign;
+export default InternationalQuickCampaign;

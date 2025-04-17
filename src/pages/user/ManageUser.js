@@ -316,7 +316,7 @@ function ManageUser() {
 
     return (
         <>
-            <section className="w-full bg-gray-200 mt-[75px] flex justify-center flex-col pb-10">
+            <section className="w-full bg-gray-200  flex justify-center flex-col pb-10">
                 <CreditHeader />
                 <div className="w-full px-3 mt-8">
                     <div className="container-fluid mt-4">

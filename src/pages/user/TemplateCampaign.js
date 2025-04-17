@@ -139,7 +139,7 @@ const TemplateCampaign = () => {
 
   return (
     <>
-      <section className="w-[100%] bg-gray-200 mt-[75px]  flex justify-center flex-col">
+      <section className="w-[100%] bg-gray-200   flex justify-center flex-col">
         <CreditHeader />
         <div className="w-full px-4 mt-8">
           <div className="w-full py-2 mb-3 bg-white">

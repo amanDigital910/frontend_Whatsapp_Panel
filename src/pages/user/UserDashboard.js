@@ -37,7 +37,7 @@ const UserDashboard = () => {
       cardName: "WA Virtual Poll Campaign",
       cardCredit: 0,
       bg: "#1eb32a",
-      redirectUrl: "/user/pollcampaign"
+      redirectUrl: "/user/virtualpollcampaign"
     },
     {
       id: 5,

@@ -18,6 +18,7 @@ const LoginScreen = lazy(() => import('./pages/auth/UserLogin'));
 const VirtualCampaign = lazy(() => import("./pages/user/wa_virtual/VirtualCampaign"));
 const CsvVirtualCampaign = lazy(() => import("./pages/user/wa_virtual/CSV_Campaign"));
 const DpVirtualCampaign = lazy(() => import("./pages/user/wa_virtual/VirtualDpCampaign"));
+const VirtualPollCampaign = lazy(() => import("./pages/user/wa_virtual/VirtualPollCampaign"));
 const ButtonCampaign = lazy(() => import("./pages/user/wa_virtual/VirtualButtonCampaign"));
 const WhatsappReport = lazy(() => import("./pages/user/wa_virtual/WhatsappReport"));
 const PersonalCSVButton = lazy(() => import("./pages/user/wa_personal/PersonalCSVButton"))
@@ -30,7 +31,7 @@ const PersonalCampaignScan = lazy(() => import("./pages/user/wa_personal/Persona
 const PersonalCampaignChannel = lazy(() => import("./pages/user/wa_personal/personalCampaignChannel"));
 const PersonalCampaignCommunity = lazy(() => import("./pages/user/wa_personal/personalCampaignCommunity"));
 
-const InternaitionaCampaign = lazy(() => import("./pages/user/wa_int_virtual/InternaitionaCampaign"));
+const InternationalCampaign = lazy(() => import("./pages/user/wa_int_virtual/InternationalCampaign"));
 const InternaitionaCsv = lazy(() => import("./pages/user/wa_int_virtual/InternationalVirtualCsv"));
 const InternaitionaButton = lazy(() => import("./pages/user/wa_int_virtual/InternationalCampaigeButton"));
 const InternationalWhatsappReport = lazy(() => import("./pages/user/wa_int_virtual/InternationalWhatsappReport"));
@@ -52,10 +53,19 @@ const ManageCredit = lazy(() => import("./pages/user/ManageCredit"));
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  
+
+  // Loader effect
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShow(true), [30000]); // delay 1s
+    // return () => clearTimeout(timer);
+    return timer;
+  }, []);
+
   const toggleDropdown = (index) =>
     setActiveDropdown(activeDropdown === index ? null : index);
-  
+
   // Disable Side bar in Login Screen
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
@@ -64,6 +74,7 @@ const App = () => {
   // const isLoginPage = location.pathname === '/login';
 
   //Blog right click from the entire website
+  // eslint-disable-next-line no-lone-blocks
   {/* useEffect(() => {
     const handleContextMenu = (e) => {
       e.preventDefault();
@@ -92,7 +103,7 @@ const App = () => {
           setIsOpen={setIsOpen}
           activeDropdown={activeDropdown}
           toggleDropdown={toggleDropdown}
-        /> }
+        />}
 
         {/* Main Area */}
         <div className="flex-1 flex flex-col ">
@@ -100,13 +111,16 @@ const App = () => {
           {/* Topbar */}
           {!isLoginPage && <NavBar
             isOpen={isOpen}
-            setIsOpen={setIsOpen} /> }
+            setIsOpen={setIsOpen} />}
 
           {/* Main Content */}
           <div className={`flex-1 flex flex-col h-full  ${!isLoginPage ? ' mt-[70px]' : ''} `}>
             {/* Scrollable content area */}
             <div className="h-[100%] overflow-y-auto">
-              <Suspense fallback={<div>Loading......</div>}>
+              <Suspense fallback={show && (
+                <div className='w-full max-h-screen h-full flex justify-center items-center'>
+                  <div className='loader' />
+                </div>)}>
                 <Routes>
                   {/* Default redirect to /login */}
                   <Route path="/" element={<Navigate to="/login" />} />
@@ -118,6 +132,7 @@ const App = () => {
                   {/* Wa virtual campaige */}
                   <Route path="/user/virtualcampaign" element={<VirtualCampaign />} />
                   <Route path="/user/dpcampaign" element={<DpVirtualCampaign />} />
+                  <Route path="/user/virtualpollcampaign" element={<VirtualPollCampaign />} />
                   <Route path="/user/buttoncampaign" element={<ButtonCampaign />} />
                   <Route path="/user/whatsappreport" element={<WhatsappReport />} />
                   <Route path="/user/csvvirtual" element={<CsvVirtualCampaign />} />
@@ -132,7 +147,7 @@ const App = () => {
                   <Route path="/personal/channel" element={<PersonalCampaignChannel />} />
                   <Route path="/personal/community" element={<PersonalCampaignCommunity />} />
                   {/* wa Int virtual */}
-                  <Route path="/international/campaign" element={<InternaitionaCampaign />} />
+                  <Route path="/international/campaign" element={<InternationalCampaign />} />
                   <Route path="/international/csvcampaign" element={<InternaitionaCsv />} />
                   <Route path="/international/buttoncampaign" element={<InternaitionaButton />} />
                   <Route path="/international/whatsappreport" element={<InternationalWhatsappReport />} />
@@ -155,7 +170,7 @@ const App = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
