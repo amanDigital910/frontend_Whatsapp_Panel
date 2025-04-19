@@ -2,10 +2,11 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 import CustomSideBar from './components/CustomSideBar';
 import NavBar from './components/NavBar';
 import './App.css'
+import { Provider } from 'react-redux';
+import store from './redux/store';
 // import SideBar from './components/SideBar';
 
 // Pages
@@ -175,9 +176,11 @@ const App = () => {
 };
 
 const MainApp = () => (
-  <Router>
-    <App />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
 );
 
 export default MainApp;

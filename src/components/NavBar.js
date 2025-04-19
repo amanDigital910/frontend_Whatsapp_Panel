@@ -6,12 +6,17 @@ import useIsMobile from '../hooks/useMobileSize';
 import './style.css';
 import { FaPowerOff } from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/actions';
 
 const NavBar = ({ setIsOpen, isOpen }) => {
     const isMobile = useIsMobile();
     const [isOpenMenu, setIsOpenMenu] = useState(false);
     const dropdownRef = useRef(null);
     const toggleRef = useRef(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleOutsideClick = (event) => {
         if (
@@ -28,6 +33,14 @@ const NavBar = ({ setIsOpen, isOpen }) => {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
     }, []);
+
+    const handleLogout = () => {
+        // Dispatch the logout action to clear user data
+        dispatch(logout());
+
+        // Redirect the user to the login page or home page
+        navigate("/login");  // Adjust the path based on your app
+    };
 
     return (
         <nav className={`bg-[#383387] p-3 px-2 fixed w-full flex flex-wrap h-[70px] z-50 justify-between items-center text-white 
@@ -63,7 +76,7 @@ const NavBar = ({ setIsOpen, isOpen }) => {
                     <div className="bg-[#383387] text-white text-lg px-4 py-3 rounded-t-lg font-medium flex items-center gap-2 cursor-pointer">
                         <BsPersonCircle /> User ID
                     </div>
-                    <button className="w-full px-4 py-3 flex items-center gap-2 text-red-500 text-lg hover:bg-gray-100 border-2 rounded-b-lg border-[#383387] cursor-pointer">
+                    <button onClick={handleLogout} className="w-full px-4 py-3 flex items-center gap-2 text-red-500 text-lg hover:bg-gray-100 border-2 rounded-b-lg border-[#383387] cursor-pointer">
                         <FaPowerOff /> Logout
                     </button>
                     {/* </div> */}
