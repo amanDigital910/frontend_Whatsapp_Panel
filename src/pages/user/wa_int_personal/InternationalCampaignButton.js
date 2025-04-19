@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { FaFileUpload } from "react-icons/fa";
 import CreditHeader from "../../../components/CreditHeader";
-import { FaFilePdf } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
-import FroalaEditor from "react-froala-wysiwyg";
 import "froala-editor/css/froala_editor.pkgd.min.css";
-import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, DisplayButton, DragDropButton, GroupDropDown, RichTextEditor, SendNowButton, TemplateDropdown, VideoUploader, WhatsappTextNumber } from "../../utils/Index";
+import 'react-quill/dist/quill.snow.css'; // Quill CSS
+import { CampaignHeading, CampaignStatus, CampaignTitle, CountryDropDown, CSVButton, DisplayButton, DragDropButton, GroupDropDown, QuillRichTextEditor, RichTextEditor, SendNowButton, TemplateDropdown, WhatsappTextNumber } from "../../utils/Index";
 
 const PerosnalButtonCampaign = () => {
   // File and editor states
@@ -32,6 +29,58 @@ const PerosnalButtonCampaign = () => {
   const [button2Url, setButton2Url] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [editorHtml, setEditorHtml] = useState('');
+  const quillRef = useRef(null); // This will hold the Quill instance
+  const reactQuillRef = useRef(null); // This will hold the ReactQuill reference
+
+  // Attach Quill reference when the component is mounted
+  useEffect(() => {
+    if (reactQuillRef.current) {
+      const quill = reactQuillRef.current.getEditor();
+      if (quill) {
+        quillRef.current = quill; // Store Quill instance for later use
+      }
+    }
+  }, []); // Empty dependency array means this runs only once when the component mounts
+
+  const handleChange = (html) => {
+    setEditorHtml(html);
+  };
+
+  const handleClick = () => {
+    // Insert "Hello, World!" at the current cursor position
+    if (quillRef.current) {
+      const range = quillRef.current.getSelection();
+      const position = range ? range.index : 0;
+      quillRef.current.insertText(position, 'Hello, World! ');
+    };
+  };
+
+
+  // Quill Editor Format
+  const Formats = [
+    'header', 'font', 'background', 'color', 'code', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'script', 'align', 'direction',
+    'link', 'image', 'code-block', 'formula', 'video'
+  ];
+
+  // Quill modules to attach to the editor
+  const ToolbarData = [
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    ['blockquote', 'code-block'], // blocks
+    [{ 'header': 1 }, { 'header': 2 }], // custom button values
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // lists
+    [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
+    [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
+    [{ 'direction': 'rtl' }], // text direction
+    [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // header dropdown
+    [{ 'color': [] }, { 'background': [] }], // dropdown with defaults
+    [{ 'font': [] }], // font family
+    [{ 'align': [] }], // text align
+    ['clean'] // remove formatting
+  ];
 
   // Fetch message groups using axios
   useEffect(() => {
@@ -280,10 +329,22 @@ const PerosnalButtonCampaign = () => {
               setSelectedTemplate={setSelectedTemplate} />
 
             {/* Froala Editor for Custom Message */}
-            <div className="w-full border border-black rounded-b-none rounded-[11px] ">
-              <RichTextEditor
+            <div className="w-full border border-black relative rounded-[11px] h-[400px] ">
+              {/* <RichTextEditor
                 editorData={editorData}
-                setEditorData={setEditorData} />
+                setEditorData={setEditorData} /> */}
+              {/* <ReactQuill
+                ref={reactQuillRef}
+                theme="snow"
+                onChange={handleChange}
+                modules={ToolbarData}
+                formats={Formats}
+                defaultValue={editorHtml}
+                placeholder="Enter your message"
+                className="top-0 right-0 left-0 absolute w-full h-[355px] rounded-3xl border-2"
+                // style={{ marginRight: '120px' }}
+              /> */}
+              {/* <button onClick={handleClick}>Insert Text</button> */}
             </div>
 
             {/* File Upload and Button Settings */}

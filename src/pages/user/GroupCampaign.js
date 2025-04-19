@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreditHeader from "../../components/CreditHeader";
+import { CampaignHeading, CampaignTitle } from "../utils/Index";
 
 const GroupCampaign = () => {
   const [groupName, setGroupName] = useState("");
@@ -133,31 +134,23 @@ const GroupCampaign = () => {
     <>
       <section className="w-[100%] bg-gray-200   flex justify-center flex-col">
         <CreditHeader />
-        <div className="w-full px-4 mt-8">
-          <div className="w-full py-2 mb-3 bg-white">
-            <h1
-              className="text-2xl text-black font-semibold pl-4"
-              style={{ fontSize: "32px" }}
-            >
-              Group
-            </h1>
-          </div>
-          <div className="w-[100%] p-3 bg-white rounded flex gap-4">
-            <div className="w-[40%] flex flex-col gap-4">
-              <div className="w-full flex items-center gap-4">
-                <div className="w-full px-3 py-2 rounded text-white font-[500] bg-brand_color_4 flex justify-center items-center">
-                  <p className="mb-0">Group Name</p>
-                </div>
-                <input
-                  type="text"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                  className="form-control border-black p-2 text-black"
-                  placeholder="Enter Group Name"
-                />
-              </div>
-              <div className="w-[100%] h-[auto]">
-                <p className="text-black pb-1">Group Message</p>
+        <div className="w-full mt-8">
+          <CampaignHeading campaignHeading="All Groups Details" />
+          {/* <div className=""> */}
+          <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
+
+            {/* Left Column */}
+            <div className="lg:w-full w-2/5 flex flex-col gap-6">
+
+              {/* Group Name Input */}
+              <CampaignTitle
+                mainTitle={"Group Name"}
+                setCampaignTitle={setGroupName}
+                inputTitle={groupName}
+                placeholder={"Enter Group Name"} />
+
+              <div className="w-[100%] h-[auto] flex flex-col gap-2">
+                <p className="text-black m-0">Group Message</p>
                 <textarea
                   ref={textareaRef}
                   value={groupNub}
@@ -165,7 +158,7 @@ const GroupCampaign = () => {
                     setGroupNum(e.target.value);
                     handleInput();
                   }}
-                  className="p-2 rounded w-[100%] min-h-[180px] bg-white text-black border-black border-[0.1px]"
+                  className="p-2 rounded w-[100%] min-h-[400px] bg-white text-black border-black border-[0.1px]"
                   placeholder="Enter your message"
                 />
               </div>

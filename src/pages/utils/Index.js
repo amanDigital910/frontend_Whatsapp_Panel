@@ -1,4 +1,7 @@
 import FroalaEditor from "react-froala-wysiwyg"
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Quill CSS
+
 import './style.css'
 import { MdDelete } from "react-icons/md"
 import { FaFileCsv } from "react-icons/fa6"
@@ -9,7 +12,7 @@ export const CampaignHeading = ({ campaignHeading }) => {
     return (
         <div className="px-3">
             <div className="w-full py-2 mb-2 bg-white rounded-lg">
-                <h1 className="text-2xl ss:text-xl md:text-xl text-start pl-6 md:pl-0 md:flex justify-center text-black font-semibold py-0 m-0">
+                <h1 className="text-2xl ss:text-xl md:text-xl text-start pl-4 md:pl-0 md:flex justify-center text-black font-semibold py-0 m-0">
                     {campaignHeading}
                 </h1>
             </div>
@@ -18,16 +21,16 @@ export const CampaignHeading = ({ campaignHeading }) => {
 }
 
 // Campaign Title Text and Campaign Name
-export const CampaignTitle = ({ mainTitle, inputTitle, setCampaignTitle }) => {
+export const CampaignTitle = ({ mainTitle, inputTitle, setCampaignTitle, placeholder }) => {
     return (
         <div className="flex md:flex-col items-start h-fit border-black border rounded-[0.42rem]">
-            <p className="md:w-full w-[40%] md:py-2 py-2 px-4 bg-brand_colors whitespace-nowrap text-white text-start font-semibold text-[1rem] m-0 md:rounded-t-md md:rounded-br-none md:rounded-bl-none rounded-l-md ">
+            <p className="md:w-full w-[40%] py-2 md:px-4 px-3 bg-brand_colors whitespace-nowrap text-white text-start font-semibold text-[1rem] m-0 md:rounded-t-md md:rounded-br-none md:rounded-bl-none rounded-l-md ">
                 {mainTitle}
             </p>
             <input
                 type="text"
                 className="w-full max-h-full custom-rounded form-control border-0 rounded-none py-2 px-4 text-[1rem] text-black placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-0"
-                placeholder="Enter Campaign Title"
+                placeholder={placeholder || "Enter Campaign Title"}
                 value={inputTitle}
                 onChange={(e) => setCampaignTitle(e.target.value)}
             />
@@ -205,7 +208,7 @@ export const CSVButton = () => {
             />
 
             <button className="flex items-center md:flex-col" onClick={() => csvInputRef.current.click()}>
-                <button className="bg-brand_colors font-medium text-white text-base py-2 px-6 w-fit md:w-full whitespace-nowrap md:rounded-t-md md:rounded-br-none md:rounded-bl-none rounded-l-md">
+                <button className="bg-brand_colors font-medium text-white text-base py-2 px-3 w-fit md:w-full whitespace-nowrap md:rounded-t-md md:rounded-br-none md:rounded-bl-none rounded-l-md">
                     Upload CSV
                 </button>
                 <span className="w-full relative flex flex-row justify-center py-2 px-2 bg-gray-300 text-gray-700 font-medium text-base overflow-hidden custom-rounded whitespace-nowrap">
@@ -265,7 +268,7 @@ export const CSVButton = () => {
 export const GroupDropDown = ({ selectedGroup, setSelectedGroup, groups }) => {
     return (
         <select
-            className="form-select border-black py-2 px-4 rounded-md text-[1rem]"
+            className="form-select border-black py-2 px-3 rounded-md text-[1rem]"
             value={selectedGroup}
             onChange={(e) => setSelectedGroup(e.target.value)}
         >
@@ -283,7 +286,7 @@ export const GroupDropDown = ({ selectedGroup, setSelectedGroup, groups }) => {
 export const CountryDropDown = ({ selectedCountry, setSelectedCountry, countries }) => {
     return (
         <select
-            className="form-select border-black py-2 px-4 rounded-md"
+            className="form-select border-black py-2 px-3 rounded-md"
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
         >
@@ -302,7 +305,7 @@ export const WhatsappTextNumber = ({ whatsAppNumbers, setWhatsAppNumbers }) => {
     return (
         // <div>
         <textarea
-            className="w-full px-4 py-2 rounded-md bg-white text-black border-black form-control placeholder-gray-500"
+            className="w-full px-3 py-2 rounded-md bg-white text-black border-black form-control placeholder-gray-500"
             placeholder="Enter WhatsApp Number"
             rows={10}
             style={{ height: "100%", minHeight: "400px" }}
@@ -315,7 +318,7 @@ export const WhatsappTextNumber = ({ whatsAppNumbers, setWhatsAppNumbers }) => {
 export const TemplateDropdown = ({ selectedTemplate, setSelectedTemplate, msgTemplates, setEditorData, }) => {
     return (
         <select
-            className="form-select form-control border-black py-2 px-4 rounded-md"
+            className="form-select form-control border-black py-2 px-3 rounded-md"
             value={selectedTemplate}
             onChange={(e) => {
                 const templateId = e.target.value;
@@ -337,6 +340,73 @@ export const TemplateDropdown = ({ selectedTemplate, setSelectedTemplate, msgTem
         </select>
     );
 }
+
+// export const QuillRichTextEditor = ({ placeholder }) => {
+//     const [editorHtml, setEditorHtml] = useState('');
+//     const quillRef = useRef(null); // This will hold the Quill instance
+//     const reactQuillRef = useRef(null); // This will hold the ReactQuill reference
+
+//     // Attach Quill reference when the component is mounted
+//     useEffect(() => {
+//         if (reactQuillRef.current) {
+//             const quill = reactQuillRef.current.getEditor();
+//             if (quill) {
+//                 quillRef.current = quill; // Store Quill instance for later use
+//             }
+//         }
+//     }, []); // Run effect only once when component mounts
+
+//     const handleChange = (html) => {
+//         setEditorHtml(html);
+//     };
+
+//     const handleClick = () => {
+//         // Insert "Hello, World!" at the current cursor position
+//         const range = quillRef.current.getSelection();
+//         const position = range ? range.index : 0;
+//         quillRef.current.insertText(position, 'Hello, World! ');
+//     };
+
+//     return (
+//         <div>
+//             <ReactQuill
+//                 ref={reactQuillRef}
+//                 theme="snow"
+//                 onChange={handleChange}
+//                 modules={ToolbarData}
+//                 formats={Formats}
+//                 defaultValue={editorHtml}
+//                 placeholder={placeholder}
+//             />
+//             <button onClick={handleClick}>Insert Text</button>
+//         </div>
+//     );
+// };
+
+// Quill Editor Format
+const Formats = [
+    'header', 'font', 'background', 'color', 'code', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent', 'script', 'align', 'direction',
+    'link', 'image', 'code-block', 'formula', 'video'
+];
+
+// Quill modules to attach to the editor
+const ToolbarData = [
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    ['blockquote', 'code-block'], // blocks
+    [{ 'header': 1 }, { 'header': 2 }], // custom button values
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // lists
+    [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
+    [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
+    [{ 'direction': 'rtl' }], // text direction
+    [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // header dropdown
+    [{ 'color': [] }, { 'background': [] }], // dropdown with defaults
+    [{ 'font': [] }], // font family
+    [{ 'align': [] }], // text align
+    ['clean'] // remove formatting
+];
 
 // write your message in this rich text editor
 export const RichTextEditor = ({ editorData, setEditorData }) => {
@@ -472,8 +542,8 @@ export const PdfUploader = ({ inputRef, uploadedFile, onFileUpload, onRemove, ca
     }, [uploadedFile]);
 
     return (
-        <div className="flex flex-col gap-2">
-            <h6 className="font-semibold">PDF (Max 15MB):</h6>
+        <div className="flex flex-col gap-1">
+            <h6 className="font-semibold m-0">PDF (Max 15MB):</h6>
             <input type="file" ref={inputRef} className="hidden" onChange={(e) => onFileUpload(e, "pdf")} accept="application/pdf" />
             <div className="flex items-center md:flex-col">
                 <button
@@ -596,8 +666,8 @@ export const DelayButtonDetails = ({ delayBetweenMessages, setDelayBetweenMessag
 }
 
 export const VideoUploader = ({ inputRef, uploadedFile, onFileUpload, onRemove, caption, onCaptionChange }) => (
-    <div className="flex flex-col gap-2">
-        <h6 className="font-semibold">Video (Max 15MB):</h6>
+    <div className="flex flex-col gap-1">
+        <h6 className="font-semibold  m-0">Video (Max 15MB):</h6>
         <div className="flex items-center md:flex-col">
             <button
                 className="bg-[#23a31af5] w-fit md:w-full text-white py-2 px-6 whitespace-nowrap md:rounded-t-md md:rounded-br-none md:rounded-bl-none rounded-l-md "

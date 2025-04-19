@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaFileUpload } from "react-icons/fa";
 import CreditHeader from '../../components/CreditHeader';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CampaignHeading, CampaignTitle } from '../utils/Index';
 
 const TemplateCampaign = () => {
   const [templateName, setTemplateName] = useState("");
@@ -100,7 +100,7 @@ const TemplateCampaign = () => {
     setEditingId(id); // Set editing state
   };
 
-  const deleteTemplate = async (id) => {    
+  const deleteTemplate = async (id) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/msgtemplate/${id}`, {
         method: "DELETE",
@@ -141,28 +141,24 @@ const TemplateCampaign = () => {
     <>
       <section className="w-[100%] bg-gray-200   flex justify-center flex-col">
         <CreditHeader />
-        <div className="w-full px-4 mt-8">
-          <div className="w-full py-2 mb-3 bg-white">
-            <h1 className="text-2xl text-black font-semibold pl-4" style={{ fontSize: "32px" }}>Template</h1>
-          </div>
-          <div className="w-[100%] p-3 bg-white rounded flex gap-4">
-            <div className="w-[40%] flex flex-col gap-4">
+        <div className="w-full border-2 mt-8">
+          <CampaignHeading campaignHeading={"All Templates"} />
+
+          {/* <div className=""> */}
+          <div className="w-full px-3 md:px-6 py-6 flex lg:flex-col gap-6">
+
+            {/* Left Column */}
+            <div className="lg:w-full w-2/5 flex flex-col gap-6">
               {/* Template Name Input */}
-              <div className="w-full flex items-center gap-4">
-                <div className="w-full px-3 py-2 rounded text-white font-[500] bg-brand_color_4 flex justify-center items-center">
-                  <p className="mb-0">Template Name</p>
-                </div>
-                <input
-                  type="text"
-                  value={templateName}
-                  onChange={(e) => setTemplateName(e.target.value)}
-                  className="form-control border-black p-2 text-black"
-                  placeholder="Enter Template Name"
-                />
-              </div>
+              <CampaignTitle
+                mainTitle={"Template Name"}
+                setCampaignTitle={setTemplateName}
+                inputTitle={templateName}
+                placeholder={"Enter Template Name"} />
+
               {/* Template Message Input */}
-              <div className="w-[100%] h-[auto]">
-                <p className="text-black pb-1">Template message</p>
+              <div className="w-[100%] h-[auto] flex flex-col gap-2">
+                <p className="text-black m-0 ">Template message</p>
                 <textarea
                   ref={textareaRef}
                   value={templateMsg}
@@ -170,7 +166,7 @@ const TemplateCampaign = () => {
                     setTemplateMsg(e.target.value);
                     handleInput();
                   }}
-                  className="p-2 rounded w-[100%] min-h-[180px] bg-white text-black border-black border-[0.1px]"
+                  className="px-3 py-2 rounded w-[100%] min-h-[400px] h-full bg-white text-black border-black border-[0.1px]"
                   placeholder="Enter your message"
                 />
               </div>
@@ -187,7 +183,7 @@ const TemplateCampaign = () => {
             <div className="w-[60%] flex flex-col gap-4">
               <div className="w-full max-h-[400px] rounded text-white overflow-auto">
                 <table className="w-full text-center table-auto">
-                  <thead className="bg-gray-800 border-b-2 border-gray-600">
+                  <thead className="bg-gray-800 border-b-2 border-gray-600 whitespace-nowrap">
                     <tr>
                       <th className="py-3 px-6 text-white font-semibold">Id</th>
                       <th className="py-3 px-6 text-white font-semibold">Template Name</th>
@@ -207,7 +203,7 @@ const TemplateCampaign = () => {
                         </td>
                         <td className="py-2 px-2">
                           <button onClick={() => editTemplate(template.templateId)} className='me-2'>Edit</button>
-                          <button  onClick={() => deleteTemplate(template.templateId)}>Delete</button>
+                          <button onClick={() => deleteTemplate(template.templateId)}>Delete</button>
 
                         </td>
                       </tr>
@@ -217,17 +213,17 @@ const TemplateCampaign = () => {
               </div>
               {/* Pagination */}
               <div className="flex justify-end align-items-center gap-4 mt-1">
-                <button 
-                  className="px-4 py-2 border rounded" 
-                  onClick={() => changePage(currentPage - 1)} 
+                <button
+                  className="px-4 py-2 border rounded"
+                  onClick={() => changePage(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
                   &lt;
                 </button>
                 <span>{`${(currentPage - 1) * recordsPerPage + 1} - ${Math.min(currentPage * recordsPerPage, templates.length)}`} of {templates.length}</span>
-                <button 
-                  className="px-4 py-2 border rounded" 
-                  onClick={() => changePage(currentPage + 1)} 
+                <button
+                  className="px-4 py-2 border rounded"
+                  onClick={() => changePage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
                   &gt;
